@@ -48,21 +48,6 @@
     opacity: 0%;
   }
 </style>
-<?php
-if (!empty($_SESSION['user_role'])) {
-  $role = $_SESSION['user_role'];
-  if ($role === '3') {
-    $login = 'd-none';
-    $css_control = 'd-none';
-  } elseif ($role === '1' || $role === '2') {
-    $login = 'd-none';
-  }
-} else {
-  $css = 'd-none';
-  $logout = 'd-none';
-  $css_control = 'd-none';
-}
-?>
 
 <body id="page-top">
   <!-- Navigation-->
@@ -81,7 +66,7 @@ if (!empty($_SESSION['user_role'])) {
           <li class="nav-item"><a class="nav-link" href="#contact">Liên Hệ</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="../admin/uploaded_img/<?= $item['image']; ?>" class="rounded-5" alt="Ảnh đại diện" width="40">
+              <img src="./admin/uploaded_img/<?php echo $image ?>" class="rounded-5" alt="" width="40">
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item mt-2 mb-2 <?php echo $css; ?>" href="./index.php?pages=profile&action=file">Xem hồ sơ</a></li>

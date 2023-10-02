@@ -124,7 +124,7 @@ if (isset($_GET['edit'])) {
     $citizen_id = $_POST['citizen_id'];
     $date_birth = $_POST['date_birth'];
 
-    if (empty($name) || empty($email) || empty($address) || empty($citizen_id) || empty($date_birth)) {
+    if (empty($name) || empty($email) || empty($phone)) {
       $message[] = 'Vui lòng điền đầy đủ thông tin';
     } else {
       uploadUserId($name, $email, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id);
@@ -182,11 +182,40 @@ if (isset($_GET['edit'])) {
     $facebook = $_POST['facebook'];
     $tiktok = $_POST['tiktok'];
 
-    if (empty($name) || empty($email) || empty($address) || empty($citizen_id) || empty($date_birth)) {
-      $message[] = 'Vui lòng điền đầy đủ thông tin';
+    if (empty($name) || empty($email)) {
+      $message[] = 'Không thể để trống email và tên của bạn!';
     } else {
       uploadUserId($name, $email, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id);
       header('Location: ./index.php?pages=profile&action=file');
     }
   }
+}
+//Setting ảnh
+if (!empty($_SESSION['id'])) {
+  $user_id = $_SESSION['id'];
+  $select_img = mysqli_query($conn, "SELECT id, image, name FROM users WHERE id ='$user_id'");
+  if (mysqli_num_rows($select_img) > 0) {
+    $fetch = mysqli_fetch_assoc($select_img);
+    if (empty($fetch['image'])) {
+      $image = "default_img.jpg";
+    } else {
+      $image = $fetch['image'];
+    }
+  }
+} else {
+  $image = "default_img.jpg";
+}
+//Setting role
+if (!empty($_SESSION['user_role'])) {
+  $role = $_SESSION['user_role'];
+  if ($role === '3') {
+    $login = 'd-none';
+    $css_control = 'd-none';
+  } elseif ($role === '1' || $role === '2') {
+    $login = 'd-none';
+  } 
+} else {
+  $css = 'd-none';
+  $logout = 'd-none';
+  $css_control = 'd-none';
 }

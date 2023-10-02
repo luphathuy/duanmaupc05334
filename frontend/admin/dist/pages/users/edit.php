@@ -8,13 +8,14 @@
       }
     }
     ?>
-    <?php //Setting image
-    if (!empty($item['image'])) {
-      $item['image'];
-    } else {
-      $item['image'] = "default_img.jpg";
-    } ?>
     <?php foreach (getUserId($id) as $item) : ?>
+      <?php //Setting image
+      if (!empty($item['image'])) {
+        $item['image'];
+      } else {
+        $item['image'] = "default_img.jpg";
+      }
+      ?>
       <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Ảnh đại diện</span>
         <img src="../admin/uploaded_img/<?= $item['image'] ?>" style="width: 100px; height: 100px;" class="mb-md-3" alt="">

@@ -37,14 +37,16 @@ if (!empty($_SESSION['user_role'])) {
 } else {
     header('Location: /product/index.php');
 }
-//Setting image
-if (!empty($item['image'])) {
-    $item['image'];
-} else {
-    $item['image'] = "default_img.jpg";
-}
 ?>
-<?php foreach (getUserID($id) as $item) : ?>
+<?php foreach (getUserSession($user_id) as $item) : 
+    //Setting image
+    if (!empty($item['image'])) {
+        $item['image'];
+    } else {
+        $item['image'] = "default_img.jpg";
+    }
+    ?>
+
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->

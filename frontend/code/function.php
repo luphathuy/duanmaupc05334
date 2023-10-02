@@ -221,6 +221,18 @@ function getUserId($id)
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
 }
+
+//Lấy người dùng theo session
+function getUserSession($user_id)
+{
+    global $conn;
+    $query = "SELECT u.id as id, u.name as name, u.email as email, u.phone as phone, u.sex as sex, u.address as address, u.citizen_id as citizen_id, u.date_birth as date_birth, 
+    u.image as image, u.facebook as facebook, u.tiktok as tiktok, u.role as role, u.create_at as create_at, r.id as id_role, r.name as name_role, s.id as id_sex, s.name as name_sex FROM users u, role r, sex s WHERE u.role = r.id AND u.sex = s.id AND u.id = '$user_id'";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
 //Xóa người dùng
 function deleteUserId($id)
 {

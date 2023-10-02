@@ -5,6 +5,9 @@ $message = array();
 include "../code/function.php";
 include './includes/nav.php';
 
+if(empty($_SESSION['id'])){
+  header('Location: ./dist/pages/account/login.php');
+}
 
 if (isset($_GET['pages'])) {
   $pages = $_GET['pages'];
