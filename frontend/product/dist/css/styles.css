@@ -75,7 +75,7 @@
   --bs-border-radius-2xl: 2rem;
   --bs-border-radius-pill: 50rem;
   --bs-link-color: #ffc800;
-  --bs-link-hover-color: #cca000;
+  --bs-link-hover-color: #cc0300;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff4cc;
 }
@@ -199,13 +199,13 @@ p {
   margin-bottom: 1rem;
 }
 
-abbr[title] {
+/* abbr[title] {
   -webkit-text-decoration: underline dotted;
   text-decoration: underline dotted;
   cursor: help;
   -webkit-text-decoration-skip-ink: none;
   text-decoration-skip-ink: none;
-}
+} */
 
 address {
   margin-bottom: 1rem;
@@ -279,7 +279,6 @@ sup {
 
 a {
   color: var(--bs-link-color);
-  text-decoration: underline;
 }
 
 a:hover {
@@ -3587,7 +3586,6 @@ fieldset:disabled .btn {
   --bs-btn-disabled-border-color: transparent;
   --bs-btn-box-shadow: none;
   --bs-btn-focus-shadow-rgb: 255, 208, 38;
-  text-decoration: underline;
 }
 
 .btn-link:focus-visible {
@@ -5149,12 +5147,12 @@ fieldset:disabled .btn {
   --bs-pagination-padding-x: 0.75rem;
   --bs-pagination-padding-y: 0.375rem;
   --bs-pagination-font-size: 1rem;
-  --bs-pagination-color: var(--bs-link-color);
+  --bs-pagination-color: var(--bs-body-color);
   --bs-pagination-bg: #fff;
   --bs-pagination-border-width: 1px;
   --bs-pagination-border-color: #dee2e6;
   --bs-pagination-border-radius: 0.375rem;
-  --bs-pagination-hover-color: var(--bs-link-hover-color);
+  --bs-pagination-hover-color: var(--bs-code-color);
   --bs-pagination-hover-bg: #e9ecef;
   --bs-pagination-hover-border-color: #dee2e6;
   --bs-pagination-focus-color: var(--bs-link-hover-color);
@@ -12648,7 +12646,7 @@ p {
 }
 
 .btn-xl {
-  padding: 1.25rem 2.5rem;
+  padding: 1.5rem 2.5rem;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1.125rem;
   font-weight: 700;
@@ -12758,7 +12756,7 @@ header.masthead {
 header.masthead .masthead-subheading {
   font-size: 1.5rem;
   line-height: 1.5rem;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
@@ -12766,14 +12764,14 @@ header.masthead .masthead-heading {
   font-size: 3.25rem;
   font-weight: 700;
   line-height: 3.25rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 @media (min-width: 768px) {
   header.masthead {
     padding-top: 10rem;
-    padding-bottom: 12.5rem;
+    padding-bottom: 10rem;
   }
 
   header.masthead .masthead-subheading {
@@ -13185,4 +13183,263 @@ section#contact form#contactForm :-ms-input-placeholder {
   text-align: center;
   font-size: 0.9rem;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.content {
+  width: 100%;
+  /* Chiều rộng của nội dung */
+  height: 100%;
+  /* Chiều cao của nội dung */
+  overflow-y: scroll;
+  /* Hiển thị thanh cuộn dọc tùy chỉnh */
+}
+
+/* Tạo thanh cuộn tùy chỉnh */
+.content::-webkit-scrollbar {
+  width: 0;
+  /* Chiều rộng của thanh cuộn tùy chỉnh */
+}
+
+
+
+.title {
+  margin-bottom: 5vh;
+}
+
+.card {
+  margin: auto;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 1rem;
+  border: transparent;
+}
+
+@media(max-width:767px) {
+  .card {
+    margin: 3vh auto;
+  }
+}
+
+.cart {
+  background-color: #fff;
+  padding: 4vh 5vh;
+  border-bottom-left-radius: 1rem;
+  border-top-left-radius: 1rem;
+}
+
+@media(max-width:767px) {
+  .cart {
+    padding: 4vh;
+    border-bottom-left-radius: unset;
+    border-top-right-radius: 1rem;
+  }
+}
+
+.summary {
+  background-color: #ddd;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  padding: 4vh;
+  color: rgb(65, 65, 65);
+}
+
+@media(max-width:767px) {
+  .summary {
+    border-top-right-radius: unset;
+    border-bottom-left-radius: 1rem;
+  }
+}
+
+.summary .col-2 {
+  padding: 0;
+}
+
+.summary .col-10 {
+  padding: 0;
+}
+
+.row {
+  margin: 0;
+}
+
+.title b {
+  font-size: 1.5rem;
+}
+
+.main {
+  margin: 0;
+  padding: 2vh 0;
+  width: 100%;
+}
+
+.col-2,
+.col {
+  padding: 0 1vh;
+}
+
+.close {
+  margin-left: auto;
+  font-size: 0.7rem;
+}
+
+.back-to-shop {
+  margin-top: 4.5rem;
+}
+
+h5 {
+  margin-top: 4vh;
+}
+
+hr {
+  margin-top: 1.25rem;
+}
+
+form {
+  padding: 2vh 0;
+}
+
+select {
+  border: 1px solid rgba(0, 0, 0, 0.137);
+  padding: 1.5vh 1vh;
+  margin-bottom: 4vh;
+  outline: none;
+  width: 100%;
+  background-color: rgb(247, 247, 247);
+}
+
+input {
+  border: 1px solid rgba(0, 0, 0, 0.137);
+  padding: 1vh;
+  outline: none;
+  width: 100%;
+  background-color: rgb(247, 247, 247);
+}
+
+input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.btn:focus {
+  box-shadow: none;
+  outline: none;
+  box-shadow: none;
+  color: white;
+  -webkit-box-shadow: none;
+  -webkit-user-select: none;
+  transition: none;
+}
+
+.btn:hover {
+  color: white;
+}
+
+a {
+  color: black;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+#code {
+  background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
+  background-repeat: no-repeat;
+  background-position-x: 95%;
+  background-position-y: center;
+}
+
+.truncate-text {
+  white-space: nowrap;
+  /* Ngăn văn bản xuống dòng */
+  overflow: hidden;
+  /* Ẩn các nội dung dư thừa */
+  text-overflow: ellipsis;
+  /* Hiển thị dấu ba chấm (...) khi bị cắt */
+  max-width: 100%;
+}
+
+.back-to-top {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  border-radius: 100%;
+  padding: 0.7rem 1rem 0.7rem 1rem;
+  border: none;
+  cursor: pointer;
+  opacity: 100%;
+  transition: opacity 0.5s;
+}
+
+.back-to-top:hover {
+  opacity: 60%;
+}
+
+.hidden {
+  opacity: 0%;
+}
+
+/* Thong bao Popup  */
+.tbpopup .tboverlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  display: none;
+}
+
+.tbpopup .tbcontent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: #fff;
+  max-width: 500px;
+  z-index: 2;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+  border-radius: 20px;
+  display: block;
+  position: fixed;
+  box-shadow: 0px 0px 10px #111;
+}
+
+@media (max-width: 700px) {
+  .tbpopup .tbcontent {
+    width: 90%;
+  }
+}
+
+.tbpopup .tbclose-btn {
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 35px;
+  height: 35px;
+  color: #ff4444;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 35px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.tbpopup.active .tboverlay {
+  display: block;
+}
+
+.tbpopup.active .tbcontent {
+  transition: all 300ms ease-in-out;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.tbbuttom {
+  background: #00cc00;
+  color: #fff
 }

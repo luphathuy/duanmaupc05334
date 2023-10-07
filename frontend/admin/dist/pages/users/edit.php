@@ -4,7 +4,7 @@
     <?php
     if (isset($message)) {
       foreach ($message as $message) {
-        echo '<p class="text-black">' . $message . '</p>';
+        echo '<p class="text-danger">' . $message . '</p>';
       }
     }
     ?>

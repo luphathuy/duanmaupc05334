@@ -97,6 +97,17 @@ function getAllComment()
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
 }
+//Lấy comment theo id sản phẩm
+function getCommentWithIdProduct($detail)
+{
+    global $conn;
+    $query = "SELECT c.id as id, c.content as content, c.id_users as id_users, c.id_product as id_product, c.comment_at as comment_at, 
+    u.id as user_id, u.image as user_image, u.name as user_name FROM comments c, users u WHERE c.id_users = u.id AND c.id_product = '$detail'";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
 //Xóa bình luận
 function deleteCommentId($id)
 {
@@ -118,16 +129,17 @@ function getAllContact()
 function deleteContactId($id)
 {
     global $conn;
-    $query = "DELETE FROM contacts WHERE id = $id";
+    $query = "DELETE FROM contacts WHERE id = '$id'";
     mysqli_query($conn, $query);
 }
 //Lấy tất cả sản phẩm
 function getAllProduct()
 {
     global $conn;
+    $limit_show = 20;
     $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
-    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.views as views, p.describe as `describe`, 
-    c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type";
+    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+    c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type LIMIT $limit_show";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
@@ -137,9 +149,67 @@ function getAllProduct()
 function getAllProductType()
 {
     global $conn;
+    $limit_home = 8;
     $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
-    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.views as views, p.describe as `describe`, 
-    c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.type = '2'";
+    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+    c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.type = '2' LIMIT $limit_home";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy sản phẩm theo detail
+function getProductDetail($detail)
+{
+    global $conn;
+    $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
+    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+    c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.id = '$detail'";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy view theo detail product
+function getViewProduct($detail)
+{
+    global $conn;
+    $query = "SELECT id, detail_id, view_count FROM views WHERE detail_id = '$detail'";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy view theo detail product
+function getAllView()
+{
+    global $conn;
+    $query = "SELECT v.detail_id as detail_id, v.view_count as view_count, p.id as id, p.product_name as product_name, p.image as image FROM views v, products p WHERE v.detail_id = p.id";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy sản phẩm theo category of product list
+function getAllProductCategory($id_category)
+{
+    global $conn;
+    $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
+      p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+      c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.category = '$id_category'";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy sản phẩm theo category of detail
+function getProductCategory($category)
+{
+    global $conn;
+    $limit = 8;
+    $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
+      p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+      c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.category = '$category' LIMIT $limit";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
@@ -154,13 +224,6 @@ function addProduct($product_name, $product_price, $product_sale, $image, $image
     mysqli_query($conn, $addProduct);
     move_uploaded_file($image_tmp_name, $image_folder);
     header('Location: ./index.php?pages=products&action=list');
-}
-//Xóa sản phẩm
-function deleteProductId($id)
-{
-    global $conn;
-    $query = "DELETE FROM products WHERE id = $id";
-    mysqli_query($conn, $query);
 }
 //Tải ảnh sản phẩm
 function uploadImageProduct($image, $image_tmp_name, $image_folder, $id)
@@ -184,6 +247,16 @@ function getProductID($id)
 {
     global $conn;
     $query = "SELECT id, product_name, product_price, product_sale, image, category, type, `describe` FROM products WHERE id = '$id'";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy sản phẩm theo id category
+function getProductIdCategory($id_category)
+{
+    global $conn;
+    $query = "SELECT id, product_name, product_price, product_sale, image, category, type, `describe` FROM products WHERE category = '$id_category'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
@@ -240,7 +313,13 @@ function deleteUserId($id)
     $query = "DELETE FROM users WHERE id = $id";
     mysqli_query($conn, $query);
 }
-
+//Xóa sản phẩm
+function deleteProductId($id)
+{
+    global $conn;
+    $deleteProductId = "DELETE FROM products WHERE id = $id";
+    mysqli_query($conn, $deleteProductId);
+}
 //Thêm người dùng
 function uploadUser($name, $password, $email, $phone, $sex, $image, $image_tmp_name, $image_folder, $address, $citizen_id, $date_birth, $facebook, $tiktok, $role)
 {
@@ -302,6 +381,66 @@ function getAllRole()
     global $conn;
     $getAllRole = "SELECT id, name FROM role";
     $sql = mysqli_query($conn, $getAllRole);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy sản phẩm theo category
+function getProductForCategory($id_category)
+{
+    global $conn;
+    $getProductForCategory = "SELECT id, name FROM category WHERE id = '$id_category'";
+    $sql = mysqli_query($conn, $getProductForCategory);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Gửi bình luận
+function uploadComment($content, $id_users, $id_product)
+{
+    global $conn;
+    $uploadComment = "INSERT INTO comments (content, id_users, id_product) VALUES ('$content', '$id_users', '$id_product')";
+    mysqli_query($conn, $uploadComment);
+}
+// Hàm để chèn thông tin người mua vào bill
+function insertBill($name, $emails, $phone, $address, $note, $total, $pay)
+{
+    global $conn;
+    $insertBill = "INSERT INTO bill (name, email, phone, address, note, total, pay) VALUES ('$name', '$emails', '$phone', '$address', '$note', '$total', '$pay')";
+    // Thực hiện truy vấn
+    if (mysqli_query($conn, $insertBill)) {
+        $last_id = mysqli_insert_id($conn);
+        return $last_id;
+    } else {
+        return false;
+    }
+}
+
+//Insert thông tin người mua lên cart
+function insertCart($names, $image, $price, $quantity, $totals, $id_bill)
+{
+    global $conn;
+    $insertCart = "INSERT INTO cart (name, image, price, quantity, total, id_bill) VALUES ('$names', '$image', '$price', '$quantity', '$totals', '$id_bill')";
+    mysqli_query($conn, $insertCart);
+}
+//Lấy dữ liệu từ bill và cart
+function getBillCart()
+{
+    global $conn;
+    $getBillCart = "SELECT b.id as id_bill, b.name as name_bill, b.email as email_bill, b.phone as phone_bill, 
+    b.address as address_bill, b.total as total_bill, b.pay as pay_bill, b.create_at as create_at_bill, 
+    c.name as name_cart, c.total as total_cart, c.quantity as quantity_cart, c.id_bill as id_bill_cart FROM bill b, cart c WHERE c.id_bill = b.id";
+    $sql = mysqli_query($conn, $getBillCart);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy dữ liệu từ bill và cart
+function getBill()
+{
+    global $conn;
+    $getBill = "SELECT create_at FROM bill";
+    $sql = mysqli_query($conn, $getBill);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
     }

@@ -1,9 +1,9 @@
 <!-- Masthead-->
-<header class="masthead">
+<header class="masthead mt-5">
     <div class="container">
         <div class="masthead-subheading text-uppercase">Chào Mừng Đến Với GWine!</div>
         <div class="masthead-heading text-uppercase">Rất Vui Được Gặp Bạn</div>
-        <a class="btn btn-primary btn-xl text-uppercase" href="#portfolio">Mua Ngay</a>
+        <a class="btn btn-primary btn-xl text-uppercase" href="#portfolio">Xem Ngay</a>
     </div>
 </header>
 <!-- Portfolio Grid-->
@@ -16,34 +16,38 @@
             <?php foreach (getAllProductType() as $item) :
                 $product_price = $item['product_price'];
                 $product_sale = $item['product_sale'];
-
                 // Tính phần trăm giảm
                 $discount = (($product_price - $product_sale) / $product_price) * 100;
             ?>
                 <div class="col-lg-3 col-sm-6 mb-4">
                     <!-- Portfolio item 1-->
-                    <div class="portfolio-item border border-dark">
-                        <div class="position-relative">
-                            <button class="top-0 mt-3 position-absolute start-0 btn btn-social btn-danger">-<?php echo number_format($discount); ?>%</button>
-                            <a class="!#" data-bs-toggle="modal" href="#portfolioModal1" title="Xem chi tiết">
-                                <img class="img-fluid mb-4" src="/admin/uploaded_img/<?= $item['image']; ?>" alt="Ảnh sản phẩm" />
-                                <a href="!#" class="bottom-0 position-absolute start-0 w-100 btn btn-danger rounded-0">Xem chi tiết</a>
-                                <button class="bottom-0 position-absolute start-0 mb-4 pb-3 ps-2 btn"><?= $item['views']; ?> Lượt xem</button>
-                            </a>
-                        </div>
-                        <div class="portfolio-caption">
-                            <small class="truncate-text mb-1"><?= $item['name_cate']; ?></small>
-                            <div class="portfolio-caption-heading truncate-text mb-1"><?= $item['product_name']; ?></div>
-                            <div class="portfolio-caption-subheading text-muted truncate-text mb-2"><?= $item['describe']; ?></div>
-                            <div class="d-flex justify-content-center">
-                                <div class="portfolio-caption-subheading text-danger h5 me-2"><?= number_format($item['product_sale'], 3); ?>đ</div>
-                                <s class="portfolio-caption-subheading text-muted ms-2"><?php echo number_format($item['product_price'], 3); ?>đ</s>
+                    <form method="post" action="./index.php?id=<?= $item['id'] ?>">
+                        <div class="portfolio-item border border-dark">
+                            <div class="position-relative">
+                                <button class="top-0 mt-3 position-absolute start-0 btn btn-social btn-danger">-<?php echo number_format($discount); ?>%</button>
+                                <a data-bs-toggle="modal" href="./index.php?pages=products&action=detail&detail=<?= $item['id']; ?>&category=<?= $item['category']; ?>" title="Xem chi tiết">
+                                    <img class="img-fluid mb-4" src="/admin/uploaded_img/<?= $item['image'] ?>" alt="Ảnh sản phẩm" />
+                                    <a href="./index.php?pages=products&action=detail&detail=<?= $item['id'] ?>&category=<?= $item['category']; ?>" class="bottom-0 position-absolute start-0 w-100 btn btn-danger rounded-0">Xem chi tiết</a>
+                                </a>
                             </div>
-                            <div class="mt-2">
-                                <input class="btn btn-danger me-1" type="submit" value="Mua Ngay">
+                            <div class="portfolio-caption">
+                                <small class="truncate-text mb-1"><?= $item['name_cate'] ?></small>
+                                <div class="portfolio-caption-heading truncate-text mb-1"><?= $item['product_name'] ?></div>
+                                <div class="portfolio-caption-subheading text-muted truncate-text mb-2"><?= $item['describe'] ?></div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="portfolio-caption-subheading text-danger h5 me-2"><?= number_format($item['product_sale'], 3) ?>đ</div>
+                                    <s class="portfolio-caption-subheading text-muted ms-2"><?php echo number_format($item['product_price'], 3) ?>đ</s>
+                                </div>
+                                <div class="mt-2">
+                                    <input class="btn btn-danger me-1" type="submit" name="add_to_cart" value="Mua Ngay">
+                                </div>
                             </div>
+                            <input type="hidden" name="name" value="<?= $item['product_name'] ?>">
+                            <input type="hidden" name="price" value="<?= $item['product_sale'] ?>">
+                            <input type="hidden" name="image" value="<?= $item['image'] ?>">
+                            <input type="hidden" name="quantity" value="1">
                         </div>
-                    </div>
+                    </form>
                 </div>
             <?php
             endforeach
@@ -143,9 +147,9 @@
         </div>
         <div class="text-center">
             <?php
-            if (isset($message)) {
-                foreach ($message as $message) {
-                    echo '<p class="text-white">' . $message . '</p>';
+            if (isset($mess)) {
+                foreach ($mess as $mess) {
+                    echo '<p class="text-primary">' . $mess . '</p>';
                 }
             }
             ?>
@@ -177,7 +181,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center"><input class="btn btn-primary btn-xl text-uppercase" name="submit_contact" type="submit" value="Gửi"></div>
+            <div class="text-center"><input class="btn btn-primary w-auto btn-xl text-uppercase" name="submit_contact" type="submit" value="Gửi"></div>
         </form>
     </div>
 </section>

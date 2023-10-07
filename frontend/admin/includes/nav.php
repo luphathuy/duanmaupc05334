@@ -26,39 +26,54 @@
         /* Hiển thị dấu ba chấm (...) khi bị cắt */
         max-width: 200px;
     }
+
+    .content {
+        width: 100%;
+        /* Chiều rộng của nội dung */
+        height: 100%;
+        /* Chiều cao của nội dung */
+        overflow-y: scroll;
+        /* Hiển thị thanh cuộn dọc tùy chỉnh */
+    }
+
+    /* Tạo thanh cuộn tùy chỉnh */
+    .content::-webkit-scrollbar {
+        width: 0;
+        /* Chiều rộng của thanh cuộn tùy chỉnh */
+    }
 </style>
 <?php
 //Setting role
-if (!empty($_SESSION['user_role'])) {
+if (isset($_SESSION['user_role'])) {
     $role = $_SESSION['user_role'];
     if ($role === '2') {
         $css = 'd-none';
+    } elseif ($role === '3') {
+        header('Location: ./dist/401.php');
     }
 } else {
-    header('Location: /product/index.php');
+    header('Location: /index.php');
 }
 ?>
-<?php foreach (getUserSession($user_id) as $item) : 
+<?php foreach (getUserSession($user_id) as $item) :
     //Setting image
     if (!empty($item['image'])) {
         $item['image'];
     } else {
         $item['image'] = "default_img.jpg";
     }
-    ?>
+?>
 
-    <body class="sb-nav-fixed">
+    <body class="sb-nav-fixed content">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">GWine Control</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-2 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Tìm Kiếm..." aria-label="Tìm Kiếm..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
+            <form class="d-flex nav-link position-relative ms-auto " role="search">
+                <input class="form-control ps-5 rounded-5" type="search" aria-label="Search">
+                <button class="btn border-0 position-absolute" type="submit"><i class="fa fa-search ms-1" style="font-size: 15px;"></i></button>
             </form>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -67,11 +82,10 @@ if (!empty($_SESSION['user_role'])) {
                         <img src="../admin/uploaded_img/<?= $item['image']; ?>" alt="Ảnh đại diện" width="40" class="rounded-5">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="./dist/pages/account/forgot.php">Quên mật khẩu</a></li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li><a class="dropdown-item" href="./dist/pages/account/logout.php">Đăng xuất</a></li>
+                        <li><a class="dropdown-item mb-1" href="./index.php?pages=account&action=forgot">Quên mật khẩu</a></li>
+                        <form class="m-0 p-0" method="post">
+                            <li><button type="submit" name="forgot" class="dropdown-item mt-1 <?php echo $logout; ?>">Đăng xuất</button></li>
+                        </form>
                     </ul>
                 </li>
             </ul>
@@ -79,7 +93,7 @@ if (!empty($_SESSION['user_role'])) {
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark scroll-none" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
+                    <div class="sb-sidenav-menu content">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Trang Chủ</div>
                             <a class="nav-link" href="index.php">
@@ -93,6 +107,7 @@ if (!empty($_SESSION['user_role'])) {
                             <a class="nav-link" href="./index.php?pages=type&action=list"><i class="fas fa-edit pe-2"></i>Loại</a>
                             <a class="nav-link" href="./index.php?pages=comments&action=list"><i class="fas fa-message pe-2"></i>Bình Luận</a>
                             <a class="nav-link" href="./index.php?pages=contacts&action=list"><i class="fas fa-envelope pe-2"></i>Liên Hệ</a>
+                            <a class="nav-link" href="./index.php?pages=views&action=list"><i class="fas fa-eye pe-2"></i>Lượt Xem</a>
                             <div class="sb-sidenav-menu-heading">Trang</div>
                             <a class="nav-link" href="/index.php"><i class="fas fa-globe pe-2"></i>Website</a>
                             <a class="nav-link" href="https://www.facebook.com/profile.php?id=61551578563435" target="_blank"><i class="fa-brands fa-facebook-f pe-2"></i>Fanpage</a>

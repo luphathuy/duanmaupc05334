@@ -11,9 +11,9 @@
       <h6 class="section-heading text-uppercase ms-2">Danh mục</h6>
     </div>
     <ul class="list-group">
-      <?php foreach (getAllCategory() as $getAllCategory) : ?>
-        <a href="./index.php?pages=products&action=list_category&id_category=<?= $getAllCategory['id']; ?>" class="list-group-item d-flex justify-content-between align-items-center pt-3 pb-3">
-          <?= $getAllCategory['name']; ?>
+      <?php foreach (getAllCategory() as $item) : ?>
+        <a href="./index.php?pages=products&action=list_category&id_category=<?= $item['id']; ?>" class="list-group-item d-flex justify-content-between align-items-center pt-3 pb-3">
+          <?= $item['name']; ?>
         <?php endforeach ?>
         </a>
     </ul>
@@ -28,7 +28,13 @@
           <ol class="breadcrumb mb-3">
             <li class="breadcrumb-item"><a href="/index.php" class="text-danger text-decoration-none">Trang chủ</a></li>
             <li class="breadcrumb-item"><a href="./index.php?pages=products&action=list" class="text-danger text-decoration-none">Sản phẩm</a></li>
-            </li>
+            <?php foreach (getProductForCategory($id_category) as $row) : ?>
+              <li class="breadcrumb-item active" aria-current="page">
+                <a href="./index.php?pages=products&action=list_category&id_category=<?= $row['id']; ?>" class="text-danger text-decoration-none">
+                  <?= $row['name']; ?>
+                </a>
+              </li>
+              </li>
           </ol>
         </div>
         <div>
@@ -53,16 +59,16 @@
       </div>
       <div class="">
         <div class="row">
-          <?php foreach (getAllProduct() as $item) :
-            $product_price = $item['product_price'];
-            $product_sale = $item['product_sale'];
+          <?php foreach (getAllProductCategory($id_category) as $item) :
+                $product_price = $item['product_price'];
+                $product_sale = $item['product_sale'];
 
-            // Tính phần trăm giảm
-            $discount = (($product_price - $product_sale) / $product_price) * 100;
+                // Tính phần trăm giảm
+                $discount = (($product_price - $product_sale) / $product_price) * 100;
           ?>
             <div class="col-lg-3 col-sm-6 mb-4">
               <!-- Portfolio item 1-->
-              <form method="post" action="./index.php?pages=products&action=list&id=<?= $item['id'] ?>">
+              <form method="post" action="./index.php?pages=products&action=list_category&id_category=<?= $row['id']; ?>&id=<?= $item['id'] ?>">
                 <div class="portfolio-item border border-dark">
                   <div class="position-relative">
                     <button class="top-0 mt-3 position-absolute start-0 btn btn-social btn-danger">-<?php echo number_format($discount); ?>%</button>
@@ -91,8 +97,9 @@
               </form>
             </div>
           <?php
-          endforeach
+              endforeach
           ?>
+        <?php endforeach ?>
         </div>
       </div>
     </section>

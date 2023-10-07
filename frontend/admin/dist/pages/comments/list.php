@@ -13,7 +13,7 @@
       </thead>
       <?php foreach (getAllComment() as $item) : ?>
         <tr>
-          <td class="font-weight-bold align-middle text-center">
+          <td class="font-weight-bold align-middle text-center pt-4">
             <img class="rounded-circle" src="/admin/uploaded_img/<?= $item['user_image'] ?>" width="50" height="50" alt="">
             <p><?= $item['user_name'] ?></p>
           </td>

@@ -60,6 +60,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card text-white mb-4" style="background-image: url('https://noithatbinhminh.com.vn/wp-content/uploads/2022/12/background-xanh-den-01.jpg'); background-size: cover;">
+                        <div class="card-body"><i class="fas fa-eye pe-2"></i> Lượt Xem</div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link text-decoration-none" href="./index.php?pages=views&action=list">Chi Tiết</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

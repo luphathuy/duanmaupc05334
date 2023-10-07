@@ -4,11 +4,10 @@
     <?php
     if (isset($message)) {
       foreach ($message as $message) {
-        echo '<p class="text-black">' . $message . '</p>';
+        echo '<p class="text-primary">' . $message . '</p>';
       }
     }
     ?>
-
     <?php foreach (getProductID($id) as $item) : ?>
       <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Ảnh sản phẩm</span>

@@ -35,7 +35,7 @@
           <td class="font-weight-bold align-middle"><?= $item['date_birth'] ?></td>
           <td class="font-weight-bold align-middle"><?= $item['create_at'] ?></td>
           <td colspan="2" class="font-weight-bold align-middle">
-            <a class="btn btn-danger mb-2" href="./index.php?pages=users&action=edit&edit=<?= $item['id'] ?>&role=<?= $item['id_role']?>&sex=<?= $item['id_sex']?>"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-danger mb-2" href="./index.php?pages=users&action=edit&edit=<?= $item['id'] ?>&role=<?= $item['id_role'] ?>&sex=<?= $item['id_sex'] ?>"><i class="fa fa-edit"></i></a>
             <a href="./index.php?pages=users&action=list&delete=<?= $item['id']; ?>" class="btn btn-danger mb-2" onclick="return confirm('Bạn có chắc chắn muốn xóa?');"><i class="fa fa-trash"></i></a>
           </td>
         </tr>

@@ -4,11 +4,6 @@ $message = array();
 @include '../config/config.php';
 include "../code/function.php";
 include './includes/nav.php';
-
-if(empty($_SESSION['id'])){
-  header('Location: ./dist/pages/account/login.php');
-}
-
 if (isset($_GET['pages'])) {
   $pages = $_GET['pages'];
 } else {
@@ -17,6 +12,24 @@ if (isset($_GET['pages'])) {
 switch ($pages) {
   case 'home':
     include './dist/home.php';
+    break;
+  case 'account':
+    switch ($_GET['action']) {
+      case 'login':
+        include './dist/pages/account/login.php';
+        break;
+      case 'passwordreset':
+        include './dist/pages/account/passwordreset.php';
+        break;
+      case 'forgot':
+        include './dist/pages/account/forgot.php';
+        break;
+      case 'register':
+        include './dist/pages/account/register.php';
+        break;
+      default:
+        break;
+    }
     break;
   case 'users':
     switch ($_GET['action']) {
@@ -84,6 +97,15 @@ switch ($pages) {
         break;
     }
     break;
+  case 'views':
+    switch ($_GET['action']) {
+      case 'list':
+        include './dist/pages/views/list.php';
+        break;
+      default:
+        break;
+    }
+    break;
   case 'type':
     switch ($_GET['action']) {
       case 'list':
@@ -98,4 +120,3 @@ switch ($pages) {
     break;
 }
 include './includes/footer.php';
-?>

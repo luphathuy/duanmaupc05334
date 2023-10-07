@@ -6,8 +6,8 @@
     $item['image'] = "default_img.jpg";
   }
 ?>
-  <section class="bg-dark bg-opacity-75">
-    <div class="container py-5 pb-2">
+  <section class="bg-dark bg-opacity-75 py-5 mt-5 pb-4">
+    <div class="container py-4 pb-2">
       <div class="row">
         <div class="col">
           <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">

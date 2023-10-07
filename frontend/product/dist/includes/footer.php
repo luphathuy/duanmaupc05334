@@ -1,4 +1,4 @@
-<footer class="footer py-4">
+<footer class="footer py-4 border-top">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-4 text-lg-start">Copyright &copy; GWine 2023</div>
@@ -18,6 +18,25 @@
     <i class="fa fa-arrow-up "></i>
   </button>
 </div>
+<!-- Thong bao pupup -->
+<?php 
+if (isset($_POST['add_to_cart'])) { ?>
+  <div class="tbpopup" id="tbpopup-1">
+    <div class="tboverlay"></div>
+    <div class="tbcontent bg-dark text-white p-5">
+      <div class="tbclose-btn" onclick="thongbaopopup()">&times;</div>
+      <div style="font-size:30px;font-weight:bold"><b>GWine</b> Thông Báo</div>
+      <?php
+      if (isset($sp)) {
+        foreach ($sp as $sp) {
+          echo '<p class="mt-4">' . $sp . '</p>';
+        }
+      }
+      ?>
+    </div>
+  </div>
+ <?php } ?>
+</body>
 <script>
   const showOnPx = 100;
   const backToTopButton = document.querySelector(".back-to-top");
@@ -56,6 +75,7 @@
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <!-- Core theme JS-->
 <script src="../../../product/dist/js/scripts.js"></script>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
@@ -63,6 +83,11 @@
 <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-</body>
+<!-- js thong bao popup -->
+<script>
+  function thongbaopopup() {
+    document.getElementById("tbpopup-1").classList.toggle("active");
+  }
+</script>
 
 </html>

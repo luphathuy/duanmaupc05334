@@ -6,29 +6,28 @@
     $item['image'] = "default_img.jpg";
   }
 ?>
-  <section class="bg-dark bg-opacity-75">
-    <form action="" method="post" enctype="multipart/form-data">
-      <div class="container py-5 pb-2">
-        <div class="row">
-          <div class="col">
-            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-              <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="/index.php" class="text-danger text-decoration-none">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="./index.php?pages=profile&action=file" class="text-danger text-decoration-none">Hồ sơ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa</li>
-                </li>
-              </ol>
-            </nav>
-          </div>
+  <section class="bg-dark bg-opacity-75 py-5 mt-5 pb-4">
+        <form action="" method="post" enctype="multipart/form-data" class="p-0 m-0">
+    <div class="container py-4 pb-2">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="/index.php" class="text-danger text-decoration-none">Trang chủ</a></li>
+              <li class="breadcrumb-item" aria-current="page"><a href="./index.php?pages=profile&action=file" class="text-danger text-decoration-none">Hồ sơ</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa hồ sơ</li>
+            </ol>
+          </nav>
         </div>
-        <div class="row">
-          <?php
-          if (isset($message)) {
-            foreach ($message as $message) {
-              echo '<p class="text-danger">' . $message . '</p>';
-            }
+      </div>
+      <div class="row">
+        <?php
+        if (isset($message)) {
+          foreach ($message as $message) {
+            echo '<p class="text-danger">' . $message . '</p>';
           }
-          ?>
+        }
+        ?>
           <div class="col-lg-4">
             <div class="card mb-4">
               <div class="card-body text-center">
@@ -56,47 +55,47 @@
             <div class="card mb-4">
               <div class="card-body p-4">
                 <div class="row mt-1 align-items-center">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Ảnh đại diện</p>
                   </div>
-                  <div class="col-sm-9">
+                  <div class="col-9">
                     <input class="w-100 border border-dark p-2" type="file" name="image">
                   </div>
                 </div>
                 <hr>
                 <div class="row mt-1">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Tên</p>
                   </div>
-                  <div class="col-sm-9">
+                  <div class="col-9">
                     <input class="w-100" type="text" name="name" value="<?= $item['name']; ?>">
                   </div>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Email</p>
                   </div>
-                  <div class="col-sm-9">
+                  <div class="col-9">
                     <input class="w-100" type="text" name="email" value="<?= $item['email']; ?>">
                   </div>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Phone</p>
                   </div>
-                  <div class="col-sm-9 ">
+                  <div class="col-9 ">
                     <input class="w-100" type="text" name="phone" value="<?= $item['phone']; ?>">
                   </div>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Giới tính</p>
                   </div>
-                  <div class="col-sm-9">
-                    <select name="sex" class="w-100">
+                  <div class="col-9">
+                    <select name="sex" class="w-100 mb-0">
                       <?php foreach (getAllSex() as $getAllSex) : ?>
                         <option class="text-black" <?= (isset($_GET['sex']) && $_GET['sex'] === $getAllSex['id']) ? 'selected' : '' ?> value="<?= $getAllSex['id'] ?>"><?= $getAllSex['name'] ?></option>
                       <?php endforeach ?>
@@ -105,39 +104,39 @@
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Số CCCD</p>
                   </div>
-                  <div class="col-sm-9">
+                  <div class="col-9">
                     <input class="w-100" type="text" name="citizen_id" value="<?= $item['citizen_id']; ?>">
                   </div>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Ngày sinh</p>
                   </div>
-                  <div class="col-sm-9">
+                  <div class="col-9">
                     <input class="w-100" type="date" name="date_birth" value="<?= $item['date_birth']; ?>">
                   </div>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-sm-3">
+                  <div class="col-3">
                     <p class="mb-0">Địa chỉ</p>
                   </div>
-                  <div class="col-sm-9">
+                  <div class="col-9">
                     <input class="w-100" type="text" name="address" value="<?= $item['address']; ?>">
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer mb-3">
-          <input type="submit" class="btn btn-danger float-end ms-2" name="edit_file" value="Cập nhật">
-        </div>
       </div>
+      <div class="modal-footer mb-3">
+        <input type="submit" class="btn btn-danger float-end me-3 w-auto" name="edit_file" value="Cập nhật">
+      </div>
+    </div>
     </form>
   </section>
 <?php endforeach ?>
