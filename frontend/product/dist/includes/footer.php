@@ -1,4 +1,4 @@
-<footer class="footer py-4 border-top">
+<footer class="text-center py-4 border-top bg-white">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-4 text-lg-start">Copyright &copy; GWine 2023</div>

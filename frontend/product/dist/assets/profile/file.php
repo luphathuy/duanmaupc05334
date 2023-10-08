@@ -23,11 +23,22 @@
           <div class="card mb-3">
             <div class="card-body text-center">
               <img src="../admin/uploaded_img/<?= $item['image']; ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-              <h5 class="my-3"><?= $item['name']; ?></h5>
+              <h5 class="my-3 mt-4 text-uppercase"><?= $item['name']; ?></h5>
               <div class="row">
-                <p class="text-muted mb-2 col-12">Lượt bình luận: 6</p>
-                <p class="col-12 mb-2"><a href="" class="text-info">Xem lịch sử bình luận</a></p>
-                <p class="col-12 m-0"><a href="" class="text-info">Xem lịch sử liên hệ</a></p>
+                <?php
+                if (isset($_SESSION)) {
+                  foreach (countComment($user_id) as $count) : ?>
+                    <p class="col-12 mb-2"><a href="./index.php?pages=profile&action=comment_his&id=<?= $item['id']; ?>" class="text-info">Xem lịch sử bình luận (<?= $count['count']; ?>)</a></p>
+                    <?php foreach (countContact($user_id) as $counts) : ?>
+                      <p class="col-12 mb-2"><a href="./index.php?pages=profile&action=contact_his&id=<?= $item['id']; ?>" class="text-info">Xem lịch sử liên hệ (<?= $counts['count']; ?>)</a></p>
+                      <?php foreach (countOrder($user_id) as $count_order) : ?>
+                        <p class="col-12 m-0"><a href="./index.php?pages=profile&action=order_his&id=<?= $item['id']; ?>" class="text-info">Lịch sử mua hàng (<?= $count_order['count']; ?>)</a></p>
+                      <?php endforeach ?>
+                    <?php endforeach ?>
+                  <?php endforeach ?>
+                <?php } else {
+                  echo '';
+                } ?>
               </div>
             </div>
           </div>
@@ -48,7 +59,7 @@
         </div>
         <div class=" col-lg-8">
           <div class="card mb-4">
-            <a href="./index.php?pages=profile&action=edit_file&edit=<?= $item['id']; ?>&sex=<?= $item['id_sex']; ?>" class="text-black text-decoration-none position-absolute top-0 end-0 me-4 mt-3"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+            <a href="./index.php?pages=profile&action=edit_file&edit=<?= $item['id']; ?>" class="text-black text-decoration-none position-absolute top-0 end-0 me-4 mt-3"><i class="fa fa-edit"></i> Chỉnh sửa</a>
             <div class="card-body p-4">
               <div class="row mt-3">
                 <div class="col-sm-3">
@@ -82,7 +93,7 @@
                   <p class="mb-0">Giới tính</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?= $item['name_sex']; ?></p>
+                  <p class="text-muted mb-0"><?= $item['sex']; ?></p>
                 </div>
               </div>
               <hr>

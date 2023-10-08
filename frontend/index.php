@@ -1,7 +1,5 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-  session_start();
-}
+session_start();
 $message = array();
 $mess = array();
 $err = array();
@@ -82,6 +80,18 @@ switch ($pages) {
         break;
       case 'edit_file':
         include './product/dist/assets/profile/edit_file.php';
+        break;
+      case 'comment_his':
+        include './product/dist/assets/profile/comment_his.php';
+        break;
+      case 'contact_his':
+        include './product/dist/assets/profile/contact_his.php';
+        break;
+      case 'order_his':
+        include './product/dist/assets/profile/order_his.php';
+        break;
+      case 'vieworder':
+        include './product/dist/assets/profile/vieworder.php';
         break;
       default:
         break;

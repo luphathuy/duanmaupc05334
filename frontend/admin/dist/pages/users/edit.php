@@ -36,9 +36,9 @@
       <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Giới Tính</span>
         <select class="w-100 p-2 rounded-2 border mb-md-3" name="sex">
-          <?php foreach (getAllSex() as $getAllSex) : ?>
-            <option class="text-black" <?= (isset($_GET['sex']) && $_GET['sex'] === $getAllSex['id']) ? 'selected' : '' ?> value="<?= $getAllSex['id'] ?>"><?= $getAllSex['name'] ?></option>
-          <?php endforeach ?>
+            <option class="text-black" value="<?= $item['sex'] ?>"><?= $item['sex'] ?></option>
+            <option class="text-black" value="Nam">Nam</option>
+            <option class="text-black" value="Nữ">Nữ</option>
         </select>
       </div>
       <div class="form-floating">

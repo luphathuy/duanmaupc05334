@@ -142,7 +142,14 @@
               <img src="../admin/uploaded_img/<?php echo $images ?>" class="rounded-5" alt="" width="40">
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item mt-2 mb-2 <?php echo $css; ?>" href="./index.php?pages=profile&action=file">Xem hồ sơ</a></li>
+              <?php
+              if (isset($user_id)) {
+              foreach (getUserSession($user_id) as $item) : ?>
+              <li><a class="dropdown-item mt-2 mb-2 <?php echo $css; ?>" href="./index.php?pages=profile&action=file&id_comment=<?= $item['id']?>">Xem hồ sơ</a></li>
+              <?php endforeach ?>
+              <?php }else {
+                echo '';
+              } ?>
               <li><a class="dropdown-item mb-2 mt-2 <?php echo $login; ?>" href="./index.php?pages=account&action=login">Đăng nhập</a></li>
               <form class="m-0 p-0" method="post">
                 <li><button type="submit" name="forgot" class="dropdown-item mb-2 mt-2 text-uppercase <?php echo $logout; ?>">Đăng xuất</button></li>

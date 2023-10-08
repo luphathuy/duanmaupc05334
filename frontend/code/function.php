@@ -108,6 +108,131 @@ function getCommentWithIdProduct($detail)
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
 }
+//Lấy comment theo id sản phẩm
+function getCommentIdUser($user_id)
+{
+    global $conn;
+    $getCommentIdUser = "SELECT c.id as id, c.content as content, c.id_users as id_users, c.id_product as id_product, c.comment_at as comment_at, c.comment_at as comment_at,
+    p.id as product_id, p.product_name as product_name FROM comments c, products p WHERE c.id_users = '$user_id' AND c.id_product = p.id";
+    $sql = mysqli_query($conn, $getCommentIdUser);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Đếm số bình luận theo id
+function countComment($user_id)
+{
+    global $conn;
+    $condition = "id_users = '$user_id'";
+    $countComment = "SELECT COUNT(id) as count FROM comments WHERE $condition";
+    $sql = mysqli_query($conn, $countComment);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Đếm số đơn hàng theo id
+function countOrder($user_id)
+{
+    global $conn;
+    $condition = "user_id = '$user_id'";
+    $countOrder = "SELECT COUNT(id) as count FROM bill WHERE $condition";
+    $sql = mysqli_query($conn, $countOrder);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Đếm số liên hệ theo id
+function countContact($user_id)
+{
+    global $conn;
+    $condition = "user_id = '$user_id'";
+    $countContact = "SELECT COUNT(id) as count FROM contacts WHERE $condition";
+    $sql = mysqli_query($conn, $countContact);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy contact theo session người dùng
+function getContactSession($user_id)
+{
+    global $conn;
+    $getContactId = "SELECT user_id, name, email, phone, content, create_at FROM contacts WHERE user_id = '$user_id'";
+    $sql = mysqli_query($conn, $getContactId);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy bill theo session người dùng
+function getBill($user_id)
+{
+    global $conn;
+    $getBill = "SELECT id, user_id, name, email, phone, address, note, total, pay, status, create_at FROM bill WHERE user_id = '$user_id'";
+    $sql = mysqli_query($conn, $getBill);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+
+//Lấy tất cả bill
+function getAllBill()
+{
+    global $conn;
+    $getAllBill = "SELECT id, user_id, name, email, phone, address, note, total, pay, status, create_at FROM bill";
+    $sql = mysqli_query($conn, $getAllBill);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy cart theo id bill
+function getCart($id_bill)
+{
+    global $conn;
+    $getCart = "SELECT name, image, price, quantity, total, id_bill, create_at FROM cart WHERE id_bill = '$id_bill'";
+    $sql = mysqli_query($conn, $getCart);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//lấy bill theo id
+function getOneBillId($id)
+{
+    global $conn;
+    $getOneBillId = "SELECT id, status FROM bill WHERE id = '$id'";
+    $sql = mysqli_query($conn, $getOneBillId);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Cập nhật bill theo id
+function uploadBillId($id, $status)
+{
+    global $conn;
+    $uploadBillId = "UPDATE bill SET status = '$status' WHERE id = '$id'";
+    $sql = mysqli_query($conn, $uploadBillId);
+    header('Location: ./index.php?pages=order&action=list');
+}
+//Lấy tất cả cart
+function getAllCart()
+{
+    global $conn;
+    $getAllCart = "SELECT name, image, price, quantity, total, id_bill, create_at FROM cart";
+    $sql = mysqli_query($conn, $getAllCart);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy order theo session người dùng
+function getOrderSession($user_id)
+{
+    global $conn;
+    $getOrderSession = "SELECT b.id as id, b.user_id as user_id, b.name as name, b.email as email, b.phone as phone, b.address as address, b.note as note, 
+    b.total as total, b.pay as pay, b.status as status, b.create_at as create_at, c.name as nameC, c.image as imageC, c.price as priceC, c.quantity as quantityC,
+    c.total as totalC, c.id_bill as id_billC FROM bill b, cart c WHERE c.id_bill = b.id AND b.user_id = '$user_id'";
+    $sql = mysqli_query($conn, $getOrderSession);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
 //Xóa bình luận
 function deleteCommentId($id)
 {
@@ -276,31 +401,18 @@ function getAllType()
 function getAllUser()
 {
     global $conn;
-    $query = "SELECT u.id as id, u.name as name, u.email as email, u.phone as phone, u.sex as sex, u.address as address, u.citizen_id as citizen_id, u.date_birth as date_birth, 
-    u.image as image, u.facebook as facebook, u.tiktok as tiktok, u.role as role, u.create_at as create_at, r.id as id_role, r.name as name_role, s.id as id_sex, s.name as name_sex FROM users u, role r, sex s WHERE u.role = r.id AND u.sex = s.id";
+    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, image, facebook, tiktok, role, create_at FROM users";
     $getAllUser = mysqli_query($conn, $query);
     if ($getAllUser) {
         return $getAllUser->fetch_all(MYSQLI_ASSOC);
     }
 }
-//Lấy người dùng theo id
-function getUserId($id)
-{
-    global $conn;
-    $query = "SELECT u.id as id, u.name as name, u.email as email, u.phone as phone, u.sex as sex, u.address as address, u.citizen_id as citizen_id, u.date_birth as date_birth, 
-    u.image as image, u.facebook as facebook, u.tiktok as tiktok, u.role as role, u.create_at as create_at, r.id as id_role, r.name as name_role, s.id as id_sex, s.name as name_sex FROM users u, role r, sex s WHERE u.role = r.id AND u.sex = s.id AND u.id = '$id'";
-    $sql = mysqli_query($conn, $query);
-    if ($sql) {
-        return $sql->fetch_all(MYSQLI_ASSOC);
-    }
-}
-
 //Lấy người dùng theo session
 function getUserSession($user_id)
 {
     global $conn;
-    $query = "SELECT u.id as id, u.name as name, u.email as email, u.phone as phone, u.sex as sex, u.address as address, u.citizen_id as citizen_id, u.date_birth as date_birth, 
-    u.image as image, u.facebook as facebook, u.tiktok as tiktok, u.role as role, u.create_at as create_at, r.id as id_role, r.name as name_role, s.id as id_sex, s.name as name_sex FROM users u, role r, sex s WHERE u.role = r.id AND u.sex = s.id AND u.id = '$user_id'";
+    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, image, facebook, tiktok, role, create_at
+    FROM users WHERE id = '$user_id'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
@@ -365,22 +477,12 @@ function uploadContact($user_id, $name, $email, $phone, $content)
     VALUES ('$user_id', '$name', '$email', '$phone', '$content')";
     mysqli_query($conn, $uploadContact);
 }
-//Lấy tất cả giới tính
-function getAllSex()
+//Lấy người dùng theo id
+function getUserId($id)
 {
     global $conn;
-    $getAllSex = "SELECT id, name FROM sex";
-    $sql = mysqli_query($conn, $getAllSex);
-    if ($sql) {
-        return $sql->fetch_all(MYSQLI_ASSOC);
-    }
-}
-//Lấy tất cả role
-function getAllRole()
-{
-    global $conn;
-    $getAllRole = "SELECT id, name FROM role";
-    $sql = mysqli_query($conn, $getAllRole);
+    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, image, facebook, tiktok, role, create_at FROM users WHERE id = '$id'";
+    $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
@@ -403,10 +505,10 @@ function uploadComment($content, $id_users, $id_product)
     mysqli_query($conn, $uploadComment);
 }
 // Hàm để chèn thông tin người mua vào bill
-function insertBill($name, $emails, $phone, $address, $note, $total, $pay)
+function insertBill($id, $name, $emails, $phone, $address, $note, $total, $pay)
 {
     global $conn;
-    $insertBill = "INSERT INTO bill (name, email, phone, address, note, total, pay) VALUES ('$name', '$emails', '$phone', '$address', '$note', '$total', '$pay')";
+    $insertBill = "INSERT INTO bill (user_id, name, email, phone, address, note, total, pay) VALUES ('$id', '$name', '$emails', '$phone', '$address', '$note', '$total', '$pay')";
     // Thực hiện truy vấn
     if (mysqli_query($conn, $insertBill)) {
         $last_id = mysqli_insert_id($conn);
@@ -422,26 +524,4 @@ function insertCart($names, $image, $price, $quantity, $totals, $id_bill)
     global $conn;
     $insertCart = "INSERT INTO cart (name, image, price, quantity, total, id_bill) VALUES ('$names', '$image', '$price', '$quantity', '$totals', '$id_bill')";
     mysqli_query($conn, $insertCart);
-}
-//Lấy dữ liệu từ bill và cart
-function getBillCart()
-{
-    global $conn;
-    $getBillCart = "SELECT b.id as id_bill, b.name as name_bill, b.email as email_bill, b.phone as phone_bill, 
-    b.address as address_bill, b.total as total_bill, b.pay as pay_bill, b.create_at as create_at_bill, 
-    c.name as name_cart, c.total as total_cart, c.quantity as quantity_cart, c.id_bill as id_bill_cart FROM bill b, cart c WHERE c.id_bill = b.id";
-    $sql = mysqli_query($conn, $getBillCart);
-    if ($sql) {
-        return $sql->fetch_all(MYSQLI_ASSOC);
-    }
-}
-//Lấy dữ liệu từ bill và cart
-function getBill()
-{
-    global $conn;
-    $getBill = "SELECT create_at FROM bill";
-    $sql = mysqli_query($conn, $getBill);
-    if ($sql) {
-        return $sql->fetch_all(MYSQLI_ASSOC);
-    }
 }

@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
       VALUES ('$name', '$email', '$phone', '$sex', '$password', '', '', '', '$date_birth', '', '', '$role')";
       if (mysqli_query($conn, $insert)) {
         $message[] = 'Đăng ký thành công!';
-        header('Location: login.php');
+        header('Location: ./index.php?pages=account&action=login');
       } else {
         $message[] = 'Đăng ký không thành công, vui lòng kiểm tra lại!';
       }
@@ -270,10 +270,10 @@ if (isset($_SESSION['id'])) {
     $phone = $_POST['phone'];
     $content = $_POST['content'];
     if (empty($name) || empty($email) || empty($phone) || empty($content)) {
-      $message[] = 'Vui lòng nhập đầy đủ thông tin';
+      $mess[] = 'Vui lòng nhập đầy đủ thông tin';
     } else {
       uploadContact($user_id, $name, $email, $phone, $content);
-      $message[] = 'Đã gửi';
+      $mess[] = 'Đã gửi';
     }
   }
 }
@@ -353,7 +353,6 @@ if (isset($_GET['edit'])) {
     $address = $_POST['address'];
     $facebook = $_POST['facebook'];
     $tiktok = $_POST['tiktok'];
-
     if (empty($name) || empty($email)) {
       $message[] = 'Không thể để trống email và tên của bạn!';
     } else {
@@ -467,9 +466,27 @@ if (isset($_POST['submit_comment'])) {
 }
 //Session cart
 if (isset($_POST['add_to_cart'])) {
-  if (isset($_SESSION['cart'])) {
-    $session_array_id = array_column($_SESSION['cart'], "id");
-    if (!in_array($_GET['id'], $session_array_id)) {
+  if (empty($_SESSION['id'])) {
+    header('Location: ./index.php?pages=account&action=login');
+  } else {
+    if (isset($_SESSION['cart'])) {
+      $session_array_id = array_column($_SESSION['cart'], "id");
+      if (!in_array($_GET['id'], $session_array_id)) {
+        $session_array = array(
+          'id' => $_GET['id'],
+          'name' => $_POST['name'],
+          'image' => $_POST['image'],
+          'price' => $_POST['price'],
+          'quantity' => $_POST['quantity']
+        );
+        $_SESSION['cart'][] = $session_array;
+        $sp[] = '
+      Đã thêm sản phẩm vào giỏ hàng!';
+      } else {
+        $sp[] = '
+      Sản phẩm này đã có trong giỏ hàng!';
+      }
+    } else {
       $session_array = array(
         'id' => $_GET['id'],
         'name' => $_POST['name'],
@@ -480,20 +497,33 @@ if (isset($_POST['add_to_cart'])) {
       $_SESSION['cart'][] = $session_array;
       $sp[] = '
       Đã thêm sản phẩm vào giỏ hàng!';
-    } else {
-      $sp[] = '
-      Sản phẩm này đã có trong giỏ hàng!';
     }
-  } else {
-    $session_array = array(
-      'id' => $_GET['id'],
-      'name' => $_POST['name'],
-      'image' => $_POST['image'],
-      'price' => $_POST['price'],
-      'quantity' => $_POST['quantity']
-    );
-    $_SESSION['cart'][] = $session_array;
-    $sp[] = '
-      Đã thêm sản phẩm vào giỏ hàng!';
+  }
+}
+if (isset($_GET['id_comment'])) {
+  $user_id = $_GET['id_comment'];
+  // Đếm đơn hàng người dùng theo id
+  countOrder($user_id);
+  // Đếm liên hệ người dùng theo id
+  countContact($user_id);
+  // Đếm bình luận người dùng theo id
+  countComment($user_id);
+}
+// Lấy liên hệ theo id người dùng
+if (isset($_GET['id'])) {
+  $user_id = $_GET['id'];
+  getOrderSession($user_id);
+  getCommentIdUser($user_id);
+  getBill($user_id);
+}
+// Lấy liên hệ theo id người dùng
+if (isset($_GET['vieworder'])) {
+  $id_bill = $_GET['vieworder'];
+  getCart($id_bill);
+}
+if (isset($_GET['edit'])) {
+  if (isset($_POST['edit_order'])) {
+    $status = $_POST['status'];
+    uploadBillId($id, $status);
   }
 }

@@ -61,6 +61,21 @@ switch ($pages) {
         break;
     }
     break;
+  case 'order':
+    switch ($_GET['action']) {
+      case 'list':
+        include './dist/pages/order/list.php';
+        break;
+      case 'detail':
+        include './dist/pages/order/detail.php';
+        break;
+      case 'edit':
+        include './dist/pages/order/edit.php';
+        break;
+      default:
+        break;
+    }
+    break;
   case 'category':
     switch ($_GET['action']) {
       case 'list':

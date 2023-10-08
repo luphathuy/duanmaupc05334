@@ -1,6 +1,7 @@
 <section class='py-5 mt-4'>
   <?php
   if (isset($_POST['payCart'])) {
+    $id = $_POST['id'];
     $name = $_POST['name'];
     $emails = $_POST['email'];
     $phone = $_POST['phone'];
@@ -11,7 +12,7 @@
     if (empty($name) || empty($emails) || empty($phone) || empty($address)) {
       $message[] = 'Vui lòng điền đầy đủ thông tin!';
     } else {
-      $id_bill = insertBill($name, $emails, $phone, $address, $note, $total, $pay);
+      $id_bill = insertBill($id, $name, $emails, $phone, $address, $note, $total, $pay);
       if ($id_bill) {
         for ($i = 0; $i < sizeof($_SESSION['cart']); $i++) {
           $names = $_SESSION['cart'][$i]['name'];
@@ -21,9 +22,14 @@
           $totals = $price * $quantity;
           insertCart($names, $image, $price, $quantity, $totals, $id_bill);
         }
-        foreach (getBill() as $date) {
-          $date_bill = $date['create_at'];
+        if (isset($user_id)) {
+          foreach (getBill($user_id) as $date) {
+            $date_bill = $date['create_at'];
+          }
+        } else {
+          echo '';
         }
+
 
         if ($pay === '0') {
           $pay_show = 'Thanh toán khi nhận hàng';
@@ -31,18 +37,18 @@
           $pay_show = 'Chuyển khoản';
         }
 
-        $heading = "Don hang moi #$id_bill";
+        $heading = "GWine_Hoa don dien tu_don hang so: $id_bill";
 
         $body = array();
-        foreach (getBillCart() as $data) {  
-        $body[] = "
+        foreach ($_SESSION['cart'] as $data) {
+          $body[] = "
         <tr class='order_item'>
           <td class='td text-center' style='color: #636363;border: 1px solid #e5e5e5;padding: 12px;text-align: left;vertical-align: middle;font-family: ' Helvetica Neue', Helvetica, Roboto, Arial, sans-serif' align='left'>
-          " . $data['name_cart'] . " </td>
+          $data[name] </td>
           <td class='td text-center' style='color: #636363;border: 1px solid #e5e5e5;padding: 12px;text-align: left;vertical-align: middle;font-family: ' Helvetica Neue', Helvetica, Roboto, Arial, sans-serif' align='left'>
-          " . $data['quantity_cart'] . "</td>
+          $data[quantity] </td>
           <td class='td text-center' style='color: #636363;border: 1px solid #e5e5e5;padding: 12px;text-align: left;vertical-align: middle;font-family: ' Helvetica Neue', Helvetica, Roboto, Arial, sans-serif' align='left'>
-            <span class='woocommerce-Price-amount amount'>" . number_format($data['total_cart'], 3) . "<span class='woocommerce-Price-currencySymbol'>₫</span></span>
+            <span class='woocommerce-Price-amount amount'>" . number_format($data['price'] * $data['quantity'], 3) . "<span class='woocommerce-Price-currencySymbol'>₫</span></span>
           </td>
         </tr>
         ";
@@ -105,11 +111,9 @@
                                                   <p style='margin: 0 0 16px'><b>GWine</b> xin chào</p>
                                                   <p style='margin: 0 0 16px'>Đơn hàng đang được xử lí và sẽ gửi đi sớm!</p>
   
-                                                  <p style='margin: 0 0 16px'>$pay_show</p>
-  
   
                                                   <h2 style='color: #7f54b3;display: block;font-family: &quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size: 18px;font-weight: bold;line-height: 130%;margin: 0 0 18px;text-align: left'>
-                                                    [Mã đơn hàng #$id_bill] ($date_bill) </h2>
+                                                    [Mã đơn hàng: $id_bill] ($date_bill) </h2>
   
                                                   <div style='margin-bottom: 40px'>
                                                     <table class='td' cellspacing='0' cellpadding='6' border='1' style='color: #636363;border: 1px solid #e5e5e5;vertical-align: middle;width: 100%;font-family: ' Helvetica Neue', Helvetica, Roboto, Arial, sans-serif' width='100%'>
@@ -199,7 +203,7 @@
         $mail->Port = '587';
         $mail->Username = 'huylppc05334@fpt.edu.vn';
         $mail->Password = 'lenl ztdz evcs foia';
-        $mail->FromName = $heading;
+        $mail->FromName = 'GWine';
         $mail->addAddress($email);
         $mail->Subject = $heading;
         $mail->isHTML(TRUE);

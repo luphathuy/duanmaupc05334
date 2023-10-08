@@ -45,7 +45,7 @@
                 <input class="col-md-12 text-black p-2 rounded-1 border" type="date" name="date_birth">
               </div>
               <div class="mt-2 form-outline">
-                <input class="col-md-12 text-black p-2 rounded-1 border" type="hidden" name="role" value="Khách hàng">
+                <input class="col-md-12 text-black p-2 rounded-1 border" type="hidden" name="role" value="3">
               </div>
               <div class="col-md-12">
                 <button class="btn btn-primary btn-lg btn-block w-100 mt-3 text-black" name="submit" type="submit">Đăng ký</button>

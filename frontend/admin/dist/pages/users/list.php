@@ -23,19 +23,26 @@
         } else {
           $item['image'] = "default_img.jpg";
         }
+        if ($item['role'] == 1) {
+          $item['role'] = 'Admin';
+        } elseif ($item['role'] == 2) {
+          $item['role'] = 'Nhân viên';
+        } else {
+          $item['role'] = 'Khách hàng';
+        }
         ?>
         <tr>
-          <td class="font-weight-bold align-middle"><?= $item['name_role'] ?></td>
+          <td class="font-weight-bold align-middle"><?= $item['role'] ?></td>
           <td class="font-weight-bold align-middle"><img class="rounded-circle" src="../admin/uploaded_img/<?= $item['image']; ?>" width="100" height="100" alt=""></td>
           <td class="font-weight-bold align-middle"><?= $item['name'] ?></td>
           <td class="font-weight-bold align-middle"><?= $item['email'] ?></td>
           <td class="font-weight-bold align-middle"><?= $item['phone'] ?></td>
-          <td class="font-weight-bold align-middle"><?= $item['name_sex'] ?></td>
+          <td class="font-weight-bold align-middle"><?= $item['sex'] ?></td>
           <td class="font-weight-bold align-middle"><?= $item['citizen_id'] ?></td>
           <td class="font-weight-bold align-middle"><?= $item['date_birth'] ?></td>
           <td class="font-weight-bold align-middle"><?= $item['create_at'] ?></td>
           <td colspan="2" class="font-weight-bold align-middle">
-            <a class="btn btn-danger mb-2" href="./index.php?pages=users&action=edit&edit=<?= $item['id'] ?>&role=<?= $item['id_role'] ?>&sex=<?= $item['id_sex'] ?>"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-danger mb-2" href="./index.php?pages=users&action=edit&edit=<?= $item['id'] ?>"><i class="fa fa-edit"></i></a>
             <a href="./index.php?pages=users&action=list&delete=<?= $item['id']; ?>" class="btn btn-danger mb-2" onclick="return confirm('Bạn có chắc chắn muốn xóa?');"><i class="fa fa-trash"></i></a>
           </td>
         </tr>

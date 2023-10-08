@@ -62,14 +62,22 @@ if (isset($_SESSION['user_role'])) {
     } else {
         $item['image'] = "default_img.jpg";
     }
+    if ($item['role'] = 1) {
+        $item['role'] = 'Admin';
+    } else {
+        $item['role'] = 'Nhân viên';
+    }
 ?>
 
     <body class="sb-nav-fixed content">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.php">GWine Control</a>
+            <div class="d-flex align-items-center ms-2">
+                <img src="../admin/dist/assets/img/logo1.png" width="50" height="50" alt="">
+                <a class="navbar-brand ps-3 w-100 me-3" href="index.php">GWINE</a>
+            </div>
             <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 ms-md-5" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-flex nav-link position-relative ms-auto " role="search">
                 <input class="form-control ps-5 rounded-5" type="search" aria-label="Search">
@@ -103,8 +111,9 @@ if (isset($_SESSION['user_role'])) {
                             <div class="sb-sidenav-menu-heading">Quản Lí</div>
                             <a class="nav-link <?php echo $css; ?>" href="./index.php?pages=users&action=list"><i class="fas fa-user pe-2"></i>Người Dùng</a>
                             <a class="nav-link" href="./index.php?pages=products&action=list"><i class="fas fa-shopping-bag pe-2"></i>Sản Phẩm</a>
+                            <a class="nav-link" href="./index.php?pages=order&action=list"><i class="fa-brands fa-shopify pe-2"></i>Đơn hàng</a>
                             <a class="nav-link" href="./index.php?pages=category&action=list"><i class="fas fa-edit pe-2"></i>Phân Loại</a>
-                            <a class="nav-link" href="./index.php?pages=type&action=list"><i class="fas fa-edit pe-2"></i>Loại</a>
+                            <a class="nav-link" href="./index.php?pages=type&action=list"><i class="fa-solid fa-layer-group pe-2"></i></i>Loại</a>
                             <a class="nav-link" href="./index.php?pages=comments&action=list"><i class="fas fa-message pe-2"></i>Bình Luận</a>
                             <a class="nav-link" href="./index.php?pages=contacts&action=list"><i class="fas fa-envelope pe-2"></i>Liên Hệ</a>
                             <a class="nav-link" href="./index.php?pages=views&action=list"><i class="fas fa-eye pe-2"></i>Lượt Xem</a>
@@ -115,8 +124,8 @@ if (isset($_SESSION['user_role'])) {
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
-                        <div class="small text-uppercase">TÔI LÀ : <?= $item['name'] . " (" . $item['name_role'] . ")"; ?></div>
-                        GWine
+                        <div class="small text-uppercase">TÔI LÀ : <?= $item['name'] . " (" . $item['role'] . ")"; ?></div>
+                        Copyright © GWine 2023
                     </div>
                 </nav>
             </div>
