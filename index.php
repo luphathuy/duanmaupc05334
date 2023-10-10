@@ -4,9 +4,9 @@ $message = array();
 $mess = array();
 $err = array();
 $cart = array();
-require_once './config/config.php';
-include './code/function.php';
-include './product/dist/includes/nav.php';
+require_once './assets/config/config.php';
+include './assets/code/function.php';
+include './assets/product/dist/includes/nav.php';
 
 if (isset($_GET['pages'])) {
   $pages = $_GET['pages'];
@@ -15,27 +15,27 @@ if (isset($_GET['pages'])) {
 }
 switch ($pages) {
   case 'home':
-    include './product/dist/home.php';
+    include './assets/product/dist/home.php';
     break;
   case 'service':
-    include './product/dist/assets/service/service.php';
+    include './assets/product/dist/assets/service/service.php';
     break;
   case 'introduce':
-    include './product/dist/assets/introduce/introduce.php';
+    include './assets/product/dist/assets/introduce/introduce.php';
     break;
   case 'contact':
-    include './product/dist/assets/contact/contact.php';
+    include './assets/product/dist/assets/contact/contact.php';
     break;
   case 'cart':
     switch ($_GET['action']) {
       case 'cart':
-        include './product/dist/assets/cart/cart.php';
+        include './assets/product/dist/assets/cart/cart.php';
         break;
       case 'pay':
-        include './product/dist/assets/cart/pay.php';
+        include './assets/product/dist/assets/cart/pay.php';
         break;
       case 'bill':
-        include './product/dist/assets/cart/bill.php';
+        include './assets/product/dist/assets/cart/bill.php';
         break;
       default:
         break;
@@ -44,16 +44,16 @@ switch ($pages) {
   case 'account':
     switch ($_GET['action']) {
       case 'login':
-        include './product/dist/assets/account/login.php';
+        include './assets/product/dist/assets/account/login.php';
         break;
       case 'passwordreset':
-        include './product/dist/assets/account/passwordreset.php';
+        include './assets/product/dist/assets/account/passwordreset.php';
         break;
       case 'forgot':
-        include './product/dist/assets/account/forgot.php';
+        include './assets/product/dist/assets/account/forgot.php';
         break;
       case 'register':
-        include './product/dist/assets/account/register.php';
+        include './assets/product/dist/assets/account/register.php';
         break;
       default:
         break;
@@ -62,13 +62,13 @@ switch ($pages) {
   case 'products':
     switch ($_GET['action']) {
       case 'list':
-        include './product/dist/assets/products/list.php';
+        include './assets/product/dist/assets/products/list.php';
         break;
       case 'list_category':
-        include './product/dist/assets/products/list_category.php';
+        include './assets/product/dist/assets/products/list_category.php';
         break;
       case 'detail':
-        include './product/dist/assets/products/detail.php';
+        include './assets/product/dist/assets/products/detail.php';
         break;
       default:
         break;
@@ -77,29 +77,32 @@ switch ($pages) {
   case 'profile':
     switch ($_GET['action']) {
       case 'file':
-        include './product/dist/assets/profile/file.php';
+        include './assets/product/dist/assets/profile/file.php';
+        break;
+      case 'file_person':
+        include './assets/product/dist/assets/profile/file_person.php';
         break;
       case 'edit_file':
-        include './product/dist/assets/profile/edit_file.php';
+        include './assets/product/dist/assets/profile/edit_file.php';
         break;
       case 'comment_his':
-        include './product/dist/assets/profile/comment_his.php';
+        include './assets/product/dist/assets/profile/comment_his.php';
         break;
       case 'contact_his':
-        include './product/dist/assets/profile/contact_his.php';
+        include './assets/product/dist/assets/profile/contact_his.php';
         break;
       case 'order_his':
-        include './product/dist/assets/profile/order_his.php';
+        include './assets/product/dist/assets/profile/order_his.php';
         break;
       case 'vieworder':
-        include './product/dist/assets/profile/vieworder.php';
+        include './assets/product/dist/assets/profile/vieworder.php';
         break;
       default:
         break;
     }
     break;
   default:
-    include './product/dist/home.php';
+    include './assets/product/dist/home.php';
     break;
 }
-include './product/dist/includes/footer.php';
+include './assets/product/dist/includes/footer.php';
