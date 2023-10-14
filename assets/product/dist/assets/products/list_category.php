@@ -34,11 +34,17 @@
                   <?= $row['name']; ?>
                 </a>
               </li>
-              </li>
           </ol>
         </div>
         <div>
-          <nav aria-label="Page navigation example">
+          <div class="me-2">
+            <select class="w-100 p-2 rounded-2 border mb-md-3 select-filter" id="select-filter">
+              <option class="text-black" value="0">Sắp xếp theo</option>
+              <option class="text-black" value="">Giá tăng dần</option>
+              <option class="text-black" value="">Giá giảm dần</option>
+            </select>
+          </div>
+          <!-- <nav aria-label="Page navigation example">
             <ul class="pagination">
               <li class="page-item">
                 <a class="page-link" href="#product_title" aria-label="Previous">
@@ -54,7 +60,7 @@
                 </a>
               </li>
             </ul>
-          </nav>
+          </nav> -->
         </div>
       </div>
       <div class="">
@@ -86,7 +92,12 @@
                       <s class="portfolio-caption-subheading text-muted ms-2"><?php echo number_format($item['product_price'], 3); ?>đ</s>
                     </div>
                     <div class="mt-2">
-                      <input class="btn btn-danger me-1" type="submit" name="add_to_cart" value="Mua Ngay">
+                      <input class="btn btn-danger me-1" type="submit" name="add_to_cart" value="Mua Ngay" <?php if (isset($lock)) {
+                                                                                                              echo $lock; ?> <?php
+                                                                                                                            } else {
+                                                                                                                              $lock = '';
+                                                                                                                            }
+                                                                                                                              ?>>
                     </div>
                   </div>
                   <input type="hidden" name="name" value="<?= $item['product_name'] ?>">

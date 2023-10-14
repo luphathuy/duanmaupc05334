@@ -5,6 +5,11 @@
   } else {
     $item['image'] = "default_img.jpg";
   }
+  if ($item['status'] == 0) {
+    $item['status'] = 'Bình thường';
+  } else {
+    $item['status'] = 'Bị hạn chế (Không thể bình luận, mua hàng,...)';
+  }
 ?>
   <section class="bg-dark bg-opacity-75 py-5 mt-5 pb-4">
     <div class="container py-4 pb-2">
@@ -26,7 +31,8 @@
               <h5 class="my-3 mt-4 text-uppercase"><?= $item['name']; ?></h5>
               <div class="row">
                 <?php
-                if (isset($_SESSION)) {
+                if (isset($_SESSION['id'])) {
+                  $user_id = $_SESSION['id'];
                   foreach (countComment($user_id) as $count) : ?>
                     <p class="col-12 mb-2"><a href="./index.php?pages=profile&action=comment_his&id=<?= $item['id']; ?>" class="text-info">Xem lịch sử bình luận (<?= $count['count']; ?>)</a></p>
                     <?php foreach (countContact($user_id) as $counts) : ?>
@@ -59,7 +65,7 @@
         </div>
         <div class=" col-lg-8">
           <div class="card mb-4">
-            <a href="./index.php?pages=profile&action=edit_file&edit=<?= $item['id']; ?>" class="text-black text-decoration-none position-absolute top-0 end-0 me-4 mt-3"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+            <a href="./index.php?pages=profile&action=edit_file&edit=<?= $item['id']; ?>" class="text-black text-decoration-none position-absolute top-0 end-0 me-4 mt-3"><i class="fa fa-edit"></i> Cài đặt</a>
             <div class="card-body p-4">
               <div class="row mt-3">
                 <div class="col-sm-3">
@@ -121,6 +127,15 @@
                 </div>
                 <div class="col-sm-9">
                   <p class="text-muted mb-3"><?= $item['address']; ?></p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Trạng thái</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-3"><?= $item['status']; ?></p>
                 </div>
               </div>
             </div>

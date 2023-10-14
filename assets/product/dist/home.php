@@ -39,7 +39,12 @@
                                     <s class="portfolio-caption-subheading text-muted ms-2"><?php echo number_format($item['product_price'], 3) ?>đ</s>
                                 </div>
                                 <div class="mt-2">
-                                    <input class="btn btn-danger me-1" type="submit" name="add_to_cart" value="Mua Ngay">
+                                    <input class="btn btn-danger me-1" type="submit" name="add_to_cart" value="Mua Ngay" <?php if (isset($lock)) {
+                                                                                                                                echo $lock; ?> <?php
+                                                                                                                                            } else {
+                                                                                                                                                $lock = '';
+                                                                                                                                            }
+                                                                                                                                                ?>>
                                 </div>
                             </div>
                             <input type="hidden" name="name" value="<?= $item['product_name'] ?>">
@@ -150,6 +155,11 @@
             if (isset($mess)) {
                 foreach ($mess as $mess) {
                     echo '<p class="text-primary">' . $mess . '</p>';
+                }
+            }
+            if (isset($errorsend)) {
+                foreach ($errorsend as $errorsend) {
+                    echo '<p class="text-primary">' . $errorsend . '</p>';
                 }
             }
             ?>

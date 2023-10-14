@@ -4,8 +4,15 @@
     <?php
     if (isset($message)) {
       foreach ($message as $message) {
-        echo '<p class="p-2 text-danger">' . $message . '</p>';
+        echo '<p class="text-danger">' . $message . '</p>';
       }
+    }
+    ?>
+    <?php
+    if ($item['status'] == 0) {
+      $item['status'] = 'Hoạt động';
+    } else {
+      $item['status'] = 'Khóa tài khoản';
     }
     ?>
     <div class="form-floating">
@@ -31,9 +38,8 @@
     <div class="form-floating">
       <span class="text-md-start d-block mb-md-2 text-black h6">Giới Tính</span>
       <select class="w-100 p-2 rounded-2 border mb-md-3" name="sex">
-        <option class="text-black" value="1">Nam</option>
-        <option class="text-black" value="2">Nữ</option>
-        <option class="text-black" value="3">Khác</option>
+        <option class="text-black" value="Nam">Nam</option>
+        <option class="text-black" value="Nữ">Nữ</option>
       </select>
     </div>
     <div class="form-floating">
@@ -47,6 +53,13 @@
     <div class="form-floating">
       <span class="text-md-start d-block mb-md-2 text-black h6">Ngày Sinh</span>
       <input type="date" class="w-100 p-2 rounded-2 border mb-md-3" name="date_birth">
+    </div>
+    <div class="form-floating">
+      <span class="text-md-start d-block mb-md-2 text-black h6">Trạng thái</span>
+      <select class="w-100 p-2 rounded-2 border mb-md-3" name="status">
+        <option class="text-black" value="0">Hoạt động</option>
+        <option class="text-black" value="1">Khóa tài khoản</option>
+      </select>
     </div>
     <div class="form-floating">
       <span class="text-md-start d-block mb-md-2 text-black h6">Vai Trò</span>

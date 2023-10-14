@@ -52,11 +52,39 @@ function getAllCategory()
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
 }
+//lấy tất cả danh mục
+function getProductCountByCategory()
+{
+    global $conn;
+
+    $query = "SELECT c.id as id, c.name as name, COUNT(p.id) AS product_count, MAX(p.product_price) AS max_sale, MIN(p.product_price) AS min_sale, AVG(p.product_price) AS avg_sale
+              FROM category c
+              LEFT JOIN products p ON c.id = p.category 
+              GROUP BY c.id, c.name";
+
+    $sql = mysqli_query($conn, $query);
+
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
 //lấy danh mục theo id
 function getOneCategory($id)
 {
     global $conn;
     $query = "SELECT id, name FROM category WHERE id = '$id'";
+    $sql = mysqli_query($conn, $query);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy sản phẩm theo category of views
+function getProductCategoryViews($views)
+{
+    global $conn;
+    $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
+      p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, p.toggle as toggle, 
+      c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.category = '$views'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
@@ -122,7 +150,7 @@ function getCommentWithIdProduct($detail)
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
 }
-//Lấy comment theo id sản phẩm
+//Lấy comment theo id sản phẩm và id
 function getCommentIdUser($user_id)
 {
     global $conn;
@@ -133,7 +161,34 @@ function getCommentIdUser($user_id)
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
 }
-//Đếm số bình luận theo id
+//Lấy comment theo id sản phẩm và id
+function getCommentDelete($id_user)
+{
+    global $conn;
+    $getCommentIdUser = "SELECT c.id as id, c.content as content, c.id_users as id_users, c.id_product as id_product, c.comment_at as comment_at, c.comment_at as comment_at,
+    p.id as product_id, p.product_name as product_name FROM comments c, products p WHERE c.id_users = '$id_user' AND c.id_product = p.id";
+    $sql = mysqli_query($conn, $getCommentIdUser);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Lấy comment theo id sản phẩm và id người dùng
+function getCommentId($views)
+{
+    global $conn;
+    $getCommentId = "SELECT c.id as id, c.content as content, c.id_users as id_users, c.id_product as id_product, c.comment_at as comment_at,
+    p.id as product_id, p.product_name as product_name, u.id as user_id, u.name as user_name, u.image as user_image
+    FROM comments c
+    LEFT JOIN products p ON c.id_product = p.id
+    LEFT JOIN users u ON c.id_users = u.id
+    WHERE c.id_product = '$views'";
+    // Trong truy vấn này, chúng ta sử dụng LEFT JOIN để kết nối bảng comments với products dựa trên cột id_product và kết nối comments với users dựa trên cột id_users. Sau đó, chúng ta áp dụng điều kiện WHERE để chỉ lấy các bản ghi có id_product bằng giá trị của $views.
+    $sql = mysqli_query($conn, $getCommentId);
+    if ($sql) {
+        return $sql->fetch_all(MYSQLI_ASSOC);
+    }
+}
+//Đếm số bình luận theo user_id
 function countComment($user_id)
 {
     global $conn;
@@ -144,6 +199,29 @@ function countComment($user_id)
         return $sql->fetch_all(MYSQLI_ASSOC);
     }
 }
+//Đếm số bình luận theo id_products
+function countCommentId()
+{
+    global $conn;
+    $countCommentId = "SELECT p.id as id, p.product_name as product_name, COUNT(c.id) as total_comment
+                    FROM products p 
+                    LEFT JOIN comments c ON p.id = c.id_product 
+                    GROUP BY p.id, p.product_name";
+    $sql = mysqli_query($conn, $countCommentId);
+    $result = array();
+
+    if ($sql) {
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $result[] = $row;
+        }
+    }
+    if (!$sql) {
+        echo "Lỗi SQL: " . mysqli_error($conn);
+    }
+
+    return $result;
+}
+
 //Đếm số đơn hàng theo id
 function countOrder($user_id)
 {
@@ -277,7 +355,7 @@ function getAllProduct()
     global $conn;
     $limit_show = 20;
     $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
-    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, p.toggle as toggle,
     c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type LIMIT $limit_show";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
@@ -290,7 +368,7 @@ function getAllProductType()
     global $conn;
     $limit_home = 8;
     $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
-    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, p.toggle as toggle, 
     c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.type = '2' LIMIT $limit_home";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
@@ -302,7 +380,7 @@ function getProductDetail($detail)
 {
     global $conn;
     $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
-    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+    p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, p.toggle as toggle, 
     c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.id = '$detail'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
@@ -334,7 +412,7 @@ function getAllProductCategory($id_category)
 {
     global $conn;
     $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
-      p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+      p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, p.toggle as toggle, 
       c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.category = '$id_category'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
@@ -347,7 +425,7 @@ function getProductCategory($category)
     global $conn;
     $limit = 8;
     $query = "SELECT p.id as id, p.product_name as product_name, p.product_price as product_price, 
-      p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, 
+      p.product_sale as product_sale, p.image as image, p.category as category, p.type as type, p.describe as `describe`, p.toggle as toggle, 
       c.id as id_cate, c.name as name_cate, t.id as id_type, t.name as name_type FROM category c, products p, type t WHERE c.id = p.category AND t.id = p.type AND p.category = '$category' LIMIT $limit";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
@@ -355,14 +433,13 @@ function getProductCategory($category)
     }
 }
 //Thêm sản phẩm
-function addProduct($product_name, $product_price, $product_sale, $image, $image_tmp_name, $image_folder, $category, $type, $describe)
+function addProduct($product_name, $product_price, $product_sale, $image, $image_tmp_name, $image_folder, $category, $type, $describe, $toggle)
 {
     global $conn;
-    $addProduct = "INSERT INTO products (product_name, product_price, product_sale, image, category, type, `describe`) 
-    VALUES ('$product_name', '$product_price', '$product_sale', '$image', '$category', '$type', '$describe')";
+    $addProduct = "INSERT INTO products (product_name, product_price, product_sale, image, category, type, `describe`, toggle) 
+    VALUES ('$product_name', '$product_price', '$product_sale', '$image', '$category', '$type', '$describe', '$toggle')";
     mysqli_query($conn, $addProduct);
     move_uploaded_file($image_tmp_name, $image_folder);
-    header('Location: ./index.php?pages=products&action=list');
 }
 //Tải ảnh sản phẩm
 function uploadImageProduct($image, $image_tmp_name, $image_folder, $id)
@@ -373,11 +450,11 @@ function uploadImageProduct($image, $image_tmp_name, $image_folder, $id)
     move_uploaded_file($image_tmp_name, $image_folder);
 }
 //Sửa và tải sản phẩm lên
-function uploadProduct($product_name, $product_price, $product_sale, $category, $type, $describe, $id)
+function uploadProduct($product_name, $product_price, $product_sale, $category, $type, $describe, $toggle, $id)
 {
     global $conn;
     $query = "UPDATE products SET product_name = '$product_name', product_price = '$product_price', 
-    product_sale = '$product_sale', category = '$category', type = '$type', `describe` = '$describe' WHERE id = '$id'";
+    product_sale = '$product_sale', category = '$category', type = '$type', `describe` = '$describe', toggle = '$toggle' WHERE id = '$id'";
     mysqli_query($conn, $query);
     header('Location: ./index.php?pages=products&action=list');
 }
@@ -385,7 +462,7 @@ function uploadProduct($product_name, $product_price, $product_sale, $category, 
 function getProductID($id)
 {
     global $conn;
-    $query = "SELECT id, product_name, product_price, product_sale, image, category, type, `describe` FROM products WHERE id = '$id'";
+    $query = "SELECT id, product_name, product_price, product_sale, image, category, type, `describe`, toggle FROM products WHERE id = '$id'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
@@ -395,7 +472,7 @@ function getProductID($id)
 function getProductIdCategory($id_category)
 {
     global $conn;
-    $query = "SELECT id, product_name, product_price, product_sale, image, category, type, `describe` FROM products WHERE category = '$id_category'";
+    $query = "SELECT id, product_name, product_price, product_sale, image, category, type, `describe`, toggle FROM products WHERE category = '$id_category'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);
@@ -415,7 +492,7 @@ function getAllType()
 function getAllUser()
 {
     global $conn;
-    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, image, facebook, tiktok, role, create_at FROM users";
+    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, status, image, facebook, tiktok, role, create_at FROM users";
     $getAllUser = mysqli_query($conn, $query);
     if ($getAllUser) {
         return $getAllUser->fetch_all(MYSQLI_ASSOC);
@@ -425,7 +502,7 @@ function getAllUser()
 function getUserSession($user_id)
 {
     global $conn;
-    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, image, facebook, tiktok, role, create_at
+    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, status, image, facebook, tiktok, role, create_at
     FROM users WHERE id = '$user_id'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
@@ -439,6 +516,13 @@ function deleteUserId($id)
     $query = "DELETE FROM users WHERE id = $id";
     mysqli_query($conn, $query);
 }
+//Xóa tất cả sản phẩm
+function deleteProductCategory($id)
+{
+    global $conn;
+    $deleteProductCategory = "DELETE FROM products WHERE category = $id";
+    mysqli_query($conn, $deleteProductCategory);
+}
 //Xóa sản phẩm
 function deleteProductId($id)
 {
@@ -447,20 +531,20 @@ function deleteProductId($id)
     mysqli_query($conn, $deleteProductId);
 }
 //Thêm người dùng
-function uploadUser($name, $password, $email, $phone, $sex, $image, $image_tmp_name, $image_folder, $address, $citizen_id, $date_birth, $facebook, $tiktok, $role)
+function uploadUser($name, $password, $email, $phone, $sex, $image, $image_tmp_name, $image_folder, $address, $citizen_id, $date_birth, $status, $facebook, $tiktok, $role)
 {
     global $conn;
-    $query = "INSERT INTO users (name, password, email, phone, sex, image, `address`, citizen_id, date_birth, facebook, tiktok, role) 
-    VALUES ('$name', '$password', '$email', '$phone', '$sex', '$image', '$address', '$citizen_id', '$date_birth', '$facebook', '$tiktok', '$role')";
+    $query = "INSERT INTO users (name, password, email, phone, sex, image, `address`, citizen_id, date_birth, status, facebook, tiktok, role) 
+    VALUES ('$name', '$password', '$email', '$phone', '$sex', '$image', '$address', '$citizen_id', '$date_birth', '$status', '$facebook', '$tiktok', '$role')";
     mysqli_query($conn, $query);
     move_uploaded_file($image_tmp_name, $image_folder);
     header('Location: ./index.php?pages=users&action=list');
 }
 //Cập nhật người dùng
-function uploadUserId($name, $email, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id)
+function uploadUserId($name, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id)
 {
     global $conn;
-    $query = "UPDATE users SET name = '$name', email = '$email', phone = '$phone', sex = '$sex',
+    $query = "UPDATE users SET name = '$name', phone = '$phone', sex = '$sex',
     `address` = '$address', citizen_id = '$citizen_id', date_birth = '$date_birth', facebook = '$facebook', tiktok = '$tiktok' WHERE id = '$id'";
     mysqli_query($conn, $query);
 }
@@ -495,7 +579,7 @@ function uploadContact($user_id, $name, $email, $phone, $content)
 function getUserId($id)
 {
     global $conn;
-    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, image, facebook, tiktok, role, create_at FROM users WHERE id = '$id'";
+    $query = "SELECT id, name, email, phone, sex, address, citizen_id, date_birth, status, image, facebook, tiktok, role, create_at FROM users WHERE id = '$id'";
     $sql = mysqli_query($conn, $query);
     if ($sql) {
         return $sql->fetch_all(MYSQLI_ASSOC);

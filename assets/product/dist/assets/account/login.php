@@ -1,37 +1,53 @@
-<section class="bg-dark bg-opacity-75 mt-5 py-5">
-  <div class="container h-100 mt-5">
+<section style="background-color: #9A616D;">
+  <div class="container py-5 h-100 mt-5">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card shadow-2-strong" style="border-radius: 1rem;">
-          <div class="card-body p-5 text-center">
-            <h3 class="mb-3">Đăng nhập</h3>
-            <form action="" method="post">
-              <?php
-              if (isset($message)) {
-                foreach ($message as $message) {
-                  echo '<p class="mb-md-2 bg-warning text-black p-2 rounded-3 col-md-12">' . $message . '</p>';
+      <div class="col col-xl-10">
+        <div class="card" style="border-radius: 1rem;">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg  " alt="login form" class="img-fluid h-100" style="border-radius: 1rem 0 0 1rem;" />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+                <div class="d-flex align-items-center mb-3 pb-1">
+                  <i class="fas fa-wine-bottle fa-2x me-3" style="color: #ff6219;"></i>
+                  <span class="h1 fw-bold mb-0">GWINE</span>
+                </div>
+                <?php
+                if (isset($message)) {
+                  foreach ($message as $message) {
+                    echo '<p class="form-outline flex-fill mb-0 text-danger">' . $message . '</p>';
+                  }
                 }
-              }
-              ?>
-              <div class="form-outline mb-4">
-                <label class="form-label float-start ms-1">Email</label>
-                <input type="email" name="email" class="form-control form-control-lg" />
+                ?>
+                <form method="post">
+
+
+
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Đăng nhập</h5>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control form-control-lg" />
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="password" class="form-control form-control-lg" />
+                  </div>
+
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-dark btn-lg btn-block" name="submit_login" type="submit">Đăng nhập</button>
+                  </div>
+
+                  <a class="small text-muted" href="./index.php?pages=account&action=forgot">Quên mật khẩu?</a>
+                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Chưa có tài khoản? <a href="./index.php?pages=account&action=register" class="text-danger">Đăng ký</a></p>
+                  <a href="#!" class="small text-muted">Điều khoản &</a>
+                  <a href="#!" class="small text-muted">Chính sách bảo mật</a>
+                </form>
+
               </div>
-              <div class="form-outline mb-4">
-                <label class="form-label float-start ms-1">Password</label>
-                <input type="password" name="password" class="form-control form-control-lg" />
-              </div>
-              <!-- Checkbox -->
-              <div class="form-check d-flex justify-content-start mb-4">
-                <input class="form-check-input" type="checkbox" value="" />
-                <label class="form-check-label ms-2"> Nhớ mật khẩu </label>
-              </div>
-              <button class="btn btn-primary btn-lg btn-block w-100 text-black" name="submit_login" type="submit">Đăng nhập</button>
-              <a href="./index.php?pages=account&action=register" class="btn btn-primary text-black btn-lg btn-block w-100 mt-3">Đăng ký</a>
-              <a class="text-decoration-none text-black float-start mt-3" href="./index.php?pages=account&action=forgot">Quên mật khẩu</a>
-              <hr class="my-5 mb-3">
-              <button onclick="window.location = '<?php echo $login_url; ?>'" class="btn btn-lg btn-block btn-primary w-100 text-black" style="background-color: #dd4b39;" type="button"><i class="fab fa-google me-2"></i> Đăng nhập với Google</button>
-            </form>
+            </div>
           </div>
         </div>
       </div>

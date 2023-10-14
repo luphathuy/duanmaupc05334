@@ -74,16 +74,7 @@
                 <hr>
                 <div class="row">
                   <div class="col-3">
-                    <p class="mb-0">Email</p>
-                  </div>
-                  <div class="col-9">
-                    <input class="w-100" type="text" name="email" value="<?= $item['email']; ?>">
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-3">
-                    <p class="mb-0">Phone</p>
+                    <p class="mb-0">Số điện thoại</p>
                   </div>
                   <div class="col-9 ">
                     <input class="w-100" type="text" name="phone" value="<?= $item['phone']; ?>">
@@ -133,9 +124,9 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer mb-3">
-          <a href="./index.php?pages=profile&action=file" class="btn btn-light float-end me-3 w-auto">Trở lại</a>
-          <input type="submit" class="btn btn-danger float-end me-3 w-auto" name="edit_file" value="Cập nhật">
+        <div class="modal-footer mb-3 justify-content-center align-items-center justify-content-md-end m-0">
+          <a href="./index.php?pages=profile&action=file" class="btn btn-light w-auto ms-2">Trở lại</a>
+          <input type="submit" class="btn btn-danger w-auto ms-2" name="edit_file" value="Cập nhật">
         </div>
       </div>
     </form>

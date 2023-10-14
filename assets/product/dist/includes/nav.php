@@ -8,7 +8,7 @@
   <meta name="author" content="" />
   <title>GWine</title>
   <!-- Favicon-->
-  <link rel="shortcut icon" type="image/png" href="product/dist/assets/img/logo1.png" />
+  <link rel="shortcut icon" type="image/png" href="./assets/product/dist/assets/img/logo1.png" />
   <!-- Font Awesome icons (free version)-->
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
   <!-- Google fonts-->
@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Core theme CSS (includes Bootstrap)-->
-  <link href="assets/product/dist/css/styles.css" rel="stylesheet" />
+  <link href="/assets/product/dist/css/styles.css" rel="stylesheet" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -145,7 +145,8 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <?php
-              if (isset($user_id)) {
+              if (isset($_SESSION['id'])) {
+                $user_id = $_SESSION['id'];
                 foreach (getUserSession($user_id) as $item) : ?>
                   <li><a class="dropdown-item mt-2 mb-2 <?php echo $css; ?>" href="./index.php?pages=profile&action=file&id_comment=<?= $item['id'] ?>">Xem hồ sơ</a></li>
                 <?php endforeach ?>
@@ -164,3 +165,17 @@
       </div>
     </div>
   </nav>
+  <?php if (isset($_SESSION['id'])) {
+    $user_id = $_SESSION['id']; ?>
+    <?php foreach (getUserSession($user_id) as $getUserSession) : ?>
+      <?php
+      if ($getUserSession['status'] == 1) {
+        $lock = 'disabled';
+      }
+      ?>
+    <?php endforeach ?>
+  <?php
+  } else {
+    $user_id = '';
+  }
+  ?>

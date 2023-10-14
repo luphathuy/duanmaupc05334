@@ -81,3 +81,36 @@
             </div>
         </div>
     </main>
+    <?php
+    $query = "SELECT category.id AS id_cate, category.name AS name_cate, COUNT(products.category) AS number_cate 
+    FROM products INNER JOIN category ON products.category = category.id GROUP BY products.category";
+    $result = mysqli_query($conn, $query);
+    $data = array();
+    while ($row = mysqli_fetch_array($result)) {
+        $data[] = $row;
+    };
+    // echo '<pre>';
+    // var_dump($data);
+    // echo '</pre>';
+    ?>
+    <div class="row m-0">
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header text-uppercase">
+                    <i class="fas fa-chart-pie me-1"></i>
+                    Thống kê số lượng sản phẩm theo danh mục
+                </div>
+                <div id="piechart"></div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    Chưa có bảng
+                </div>
+                <div id="piechart"></div>
+                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+            </div>
+        </div>
+    </div>

@@ -13323,7 +13323,7 @@ body {
   /* Ẩn các nội dung dư thừa */
   text-overflow: ellipsis;
   /* Hiển thị dấu ba chấm (...) khi bị cắt */
-  max-width: 200px;
+  max-width: 150px;
 }
 
 .content {

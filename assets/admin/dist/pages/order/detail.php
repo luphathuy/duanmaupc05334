@@ -4,7 +4,7 @@
     <table class="table mb-0">
       <thead>
         <tr>
-          <th scope="col" class="ps-4 p-3">Mã đơn</th>
+          <th scope="col" class="ps-4 p-3">Mã đơn hàng</th>
           <th scope="col" class="p-3">Hình ảnh</th>
           <th scope="col" class="p-3">Tên sản phẩm</th>
           <th scope="col" class="p-3">Giá</th>

@@ -8,7 +8,7 @@ if (isset($_SESSION['user_role'])) {
         header('Location: ./dist/401.php');
     }
 } else {
-    header('Location: ./dist/401.php');
+    header('Location: /index.php?pages=account&action=login');
 }
 ?>
 <!DOCTYPE html>
@@ -27,34 +27,8 @@ if (isset($_SESSION['user_role'])) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" type="image/png" href="adist/assets/img/logo1.png" />
+    <link rel="shortcut icon" type="image/png" href="/assets/admin/dist/assets/img/logo1.png" />
 </head>
-<style>
-    .truncate-text {
-  white-space: nowrap;
-  /* Ngăn văn bản xuống dòng */
-  overflow: hidden;
-  /* Ẩn các nội dung dư thừa */
-  text-overflow: ellipsis;
-  /* Hiển thị dấu ba chấm (...) khi bị cắt */
-  max-width: 200px;
-}
-
-.content {
-  width: 100%;
-  /* Chiều rộng của nội dung */
-  height: 100%;
-  /* Chiều cao của nội dung */
-  overflow-y: scroll;
-  /* Hiển thị thanh cuộn dọc tùy chỉnh */
-}
-
-/* Tạo thanh cuộn tùy chỉnh */
-.content::-webkit-scrollbar {
-  width: 0;
-  /* Chiều rộng của thanh cuộn tùy chỉnh */
-}
-</style>
 <?php foreach (getUserSession($user_id) as $item) :
     //Setting image
     if (!empty($item['image'])) {
@@ -108,7 +82,7 @@ if (isset($_SESSION['user_role'])) {
                                 Bảng Điều Khiển
                             </a>
                             <div class="sb-sidenav-menu-heading">Quản Lí</div>
-                            <a class="nav-link <?php echo $css; ?>" href="./index.php?pages=users&action=list"><i class="fas fa-user pe-2"></i>Người Dùng</a>
+                            <a class="nav-link" href="./index.php?pages=users&action=list"><i class="fas fa-user pe-2"></i>Người Dùng</a>
                             <a class="nav-link" href="./index.php?pages=products&action=list"><i class="fas fa-shopping-bag pe-2"></i>Sản Phẩm</a>
                             <a class="nav-link" href="./index.php?pages=order&action=list"><i class="fa-brands fa-shopify pe-2"></i>Đơn hàng</a>
                             <a class="nav-link" href="./index.php?pages=category&action=list"><i class="fas fa-edit pe-2"></i>Phân Loại</a>

@@ -4,6 +4,7 @@ $message = array();
 $mess = array();
 $err = array();
 $cart = array();
+$errorsend = array();
 require_once './assets/config/config.php';
 include './assets/code/function.php';
 include './assets/product/dist/includes/nav.php';

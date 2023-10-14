@@ -31,11 +31,17 @@
         <input type="text" class="w-100 p-2 rounded-2 border mb-md-3" name="describe" value="<?= $item['describe'] ?>" required>
       </div>
       <div class="form-floating">
+        <span class="text-md-start d-block mb-md-2 text-black h6">Bình luận</span>
+        <select class="w-100 p-2 rounded-2 border mb-md-3" name="toggle">
+          <option class="text-black" value="0">Bật</option>
+          <option class="text-black" value="1">Tắt</option>
+        </select>
+      </div>
+      <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Phân loại</span>
         <select class="w-100 p-2 rounded-2 border mb-md-3" name="category">
           <?php foreach (getAllCategory() as $getAllCategory) : ?>
-            <option class="text-black" <?= (isset($_GET['category']) && $_GET['category'] === $getAllCategory['id']) ? 'selected' : '' ?>
-            value="<?= $getAllCategory['id'] ?>"><?= $getAllCategory['name'] ?></option>
+            <option class="text-black" <?= (isset($_GET['category']) && $_GET['category'] === $getAllCategory['id']) ? 'selected' : '' ?> value="<?= $getAllCategory['id'] ?>"><?= $getAllCategory['name'] ?></option>
           <?php endforeach ?>
         </select>
       </div>
@@ -43,8 +49,7 @@
         <span class="text-md-start d-block mb-md-2 text-black h6">Loại sản phẩm</span>
         <select class="w-100 p-2 rounded-2 border mb-md-3" name="type">
           <?php foreach (getAllType() as $getAllType) : ?>
-            <option class="text-black" <?= (isset($_GET['type']) && $_GET['type'] === $getAllType['id']) ? 'selected' : '' ?>
-            value="<?= $getAllType['id'] ?>"><?= $getAllType['name'] ?></option>
+            <option class="text-black" <?= (isset($_GET['type']) && $_GET['type'] === $getAllType['id']) ? 'selected' : '' ?> value="<?= $getAllType['id'] ?>"><?= $getAllType['name'] ?></option>
           <?php endforeach ?>
         </select>
       </div>

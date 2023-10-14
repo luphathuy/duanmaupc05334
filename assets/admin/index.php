@@ -87,6 +87,9 @@ switch ($pages) {
       case 'edit':
         include './dist/pages/category/edit.php';
         break;
+      case 'views':
+        include './dist/pages/category/views.php';
+        break;
       default:
         break;
     }
@@ -97,7 +100,7 @@ switch ($pages) {
         include './dist/pages/comments/list.php';
         break;
       case 'view':
-        include '';
+        include './dist/pages/comments/view.php';
         break;
       default:
         break;

@@ -31,7 +31,14 @@
             </li>
           </ol>
         </div>
-        <div>
+        <div class="me-2">
+          <select class="w-100 p-2 rounded-2 border mb-md-3">
+            <option class="text-black" value="0">Sắp xếp theo</option>
+            <option class="text-black" value="">Giá tăng dần</option>
+            <option class="text-black" value="">Giá giảm dần</option>
+          </select>
+        </div>
+        <!-- <div>
           <nav aria-label="Page navigation example">
             <ul class="pagination">
               <li class="page-item">
@@ -49,10 +56,10 @@
               </li>
             </ul>
           </nav>
-        </div>
+        </div> -->
       </div>
-      <div class="">
-        <div class="row">
+      <div class="items">
+        <div class="row" data-price="">
           <?php foreach (getAllProduct() as $item) :
             $product_price = $item['product_price'];
             $product_sale = $item['product_sale'];
@@ -80,7 +87,13 @@
                       <s class="portfolio-caption-subheading text-muted ms-2"><?php echo number_format($item['product_price'], 3); ?>đ</s>
                     </div>
                     <div class="mt-2">
-                      <input class="btn btn-danger me-1" type="submit" name="add_to_cart" value="Mua Ngay">
+                      <input class="btn btn-danger me-1" type="submit" name="add_to_cart" value="Mua Ngay" <?php if (isset($lock)) {
+                                                                                                              echo $lock; ?> <?php
+                                                                                                                            } else {
+                                                                                                                              $lock = '';
+                                                                                                                            }
+                                                                                                                              ?>>
+
                     </div>
                   </div>
                   <input type="hidden" name="name" value="<?= $item['product_name'] ?>">

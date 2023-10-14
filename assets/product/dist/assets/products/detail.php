@@ -15,15 +15,15 @@
       ?>
       <form method="post" action="./index.php?pages=products&action=detail&detail=<?= $item['id']; ?>&category=<?= $item['category']; ?>&id=<?= $item['id'] ?>">
         <div class="row gx-4 gx-lg-5 align-items-center">
-          <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="./admin/uploaded_img/<?= $item['image']; ?>" alt="..." /></div>
+          <div class="col-md-6 text-center"><img class="card-img-top mb-5 mb-md-0 w-100" src="./assets/admin/uploaded_img/<?= $item['image']; ?>" alt="..." /></div>
           <div class="col-md-6">
             <div class="small mb-1">Danh Mục: <?= $item['name_cate']; ?></div>
             <h1 class="h4 mt-2 mb-2 fw-bolder"><?= $item['product_name']; ?></h1>
-            <div class="fs-5">
+            <div class="fs-6">
               <span class="text-decoration-line-through"><?= number_format($item['product_price'], 3); ?>đ</span>
-              <span class="text-danger h4 ms-2"><?= number_format($item['product_sale'], 3); ?>đ</span>
+              <span class="text-danger h5 ms-2"><?= number_format($item['product_sale'], 3); ?>đ</span>
             </div>
-            <div class="fs-5">
+            <div class="fs-6">
               <?php foreach (getViewProduct($detail) as $getViewProduct) : ?>
                 <label class="mt-2 mb-1"><?= $getViewProduct['view_count']; ?> Lượt xem</label>
               <?php endforeach ?>
@@ -31,7 +31,12 @@
             <p class="lead"><?= $item['describe']; ?></p>
             <div class="d-flex">
               <input class="form-control text-center me-3" id="inputQuantity" type="num" name="quantity" value="1" style="max-width: 5rem" />
-              <button class="btn btn-outline-dark flex-shrink-0" type="submit" name="add_to_cart">
+              <button class="btn btn-outline-dark flex-shrink-0" type="submit" name="add_to_cart" <?php if (isset($lock)) {
+                                                                                                    echo $lock; ?> <?php
+                                                                                                                                          } else {
+                                                                                                                                            $lock = '';
+                                                                                                                                          }
+                                                                                                                                            ?>>
                 <i class="bi-cart-fill me-1"></i>
                 Thêm vào giỏ hàng
               </button>
@@ -61,17 +66,43 @@
             }
             ?>
             <?php
-            if (isset($user_id)) {
+            if (isset($_SESSION['id'])) {
+              $user_id = $_SESSION['id'];
               foreach (getUserSession($user_id) as $getU) : ?>
                 <div class="d-flex align-items-center justify-content-start ms-2 mb-4 mt-5">
                   <img class="rounded-circle shadow-1-strong me-3" src="./assets/admin/uploaded_img/<?= $getU['image'] ?>" alt="avatar" width="50" height="50" />
                   <form method="post" class="w-100 d-flex slidebar">
-                    <input type="text" name="content" class="rounded-5 ps-3 " placeholder="Viết bình luận của bạn..">
-                    <input type="hidden" name="id_users" value="<?= $getU['id'] ?>">
-                    <?php foreach (getProductDetail($detail) as $getIdProduct) : ?>
-                      <input type="hidden" name="id_product" value="<?= $getIdProduct['id'] ?>">
+                    <?php foreach (getProductDetail($detail) as $item) : ?>
+                      <?php
+                      $tb = '';
+                      if ($item['toggle'] == 0) {
+                        $item['toggle'] = '';
+                        $tb = 'Viết bình luận của bạn..';
+                      } else {
+                        $item['toggle'] = 'disabled';
+                        $tb = 'Người quản trị đã tắt bình luận sản phẩm này';
+                      }
+                      ?>
+                      <?php
+                      if (isset($_SESSION['id'])) {
+                        $user_id = $_SESSION['id'];
+                        foreach (getUserSession($user_id) as $getUserSession) : ?>
+                          <?php
+                          if ($getUserSession['status'] == 1) {
+                            $item['toggle'] = 'disabled';
+                          }
+                          ?>
+                        <?php endforeach ?>
+                      <?php } else {
+                        $user_id = '';
+                      } ?>
+                      <input type="text" name="content" class="rounded-5 ps-3" placeholder="<?= $tb ?>" <?= $item['toggle'] ?>>
+                      <input type="hidden" name="id_users" value="<?= $getU['id'] ?>">
+                      <?php foreach (getProductDetail($detail) as $getIdProduct) : ?>
+                        <input type="hidden" name="id_product" value="<?= $getIdProduct['id'] ?>">
+                      <?php endforeach ?>
+                      <button type="submit" name="submit_comment" class="border-0 bg-light w-auto ms-3" <?= $item['toggle'] ?>><i class="fa fa-paper-plane" title="Gửi" style="font-size: 24px;"></i></button>
                     <?php endforeach ?>
-                    <button type="submit" name="submit_comment" class="border-0 bg-light w-auto ms-3"><i class="fa fa-paper-plane" title="Gửi" style="font-size: 24px;"></i></button>
                   </form>
                 </div>
               <?php endforeach ?>
@@ -90,7 +121,7 @@
                 <div class="col">
                   <div class="d-flex flex-start mb-3">
                     <!-- Comment -->
-                    <a href="./index.php?pages=profile&action=file_person&profile_id=<?= $getCmt['id_users'] ?>"><img class="rounded-circle shadow-1-strong mt-2 me-3" src="./assets/admin/uploaded_img/<?= $getCmt['user_image'] ?>" alt="avatar" width="50" height="50" /></a>
+                    <a href="./index.php?pages=profile&action=file_person&profile_id=<?= $getCmt['id_users'] ?>" class=""><img class="rounded-circle shadow-1-strong mt-2 me-3" src="./assets/admin/uploaded_img/<?= $getCmt['user_image'] ?>" alt="avatar" width="50" height="50" /></a>
                     <div class="flex-grow-1 flex-shrink-1">
                       <div>
                         <div class="">
@@ -151,7 +182,7 @@
                   <div class="portfolio-caption-subheading text-danger h5 ms-1"><?= number_format($data['product_sale'], 3); ?>đ</div>
                 </div>
                 <div class="mt-2">
-                  <input class="btn btn-danger me-1" type="submit" value="Mua Ngay" name="add_to_cart">
+                  <input class="btn btn-danger me-1 <?php echo $lock; ?>" type="submit" value="Mua Ngay" name="add_to_cart">
                 </div>
                 <input type="hidden" name="name" value="<?= $data['product_name'] ?>">
                 <input type="hidden" name="price" value="<?= $data['product_sale'] ?>">

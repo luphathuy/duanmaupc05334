@@ -1,24 +1,33 @@
-<section class="bg-dark vh-100 bg-opacity-75">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card shadow-2-strong" style="border-radius: 1rem;">
-          <div class="card-body p-5 text-center">
-            <h3 class="mb-3">Quên mật khẩu</h3>
-            <form action="" method="post">
-              <?php
-              if (isset($message)) {
-                foreach ($message as $message) {
-                  echo '<p class="mb-md-2 bg-warning text-black p-1 rounded-3 col-md-12">' . $message . '</p>';
-                }
+<section style="background-color: #9A616D;">
+  <div class="container d-flex flex-column">
+    <div class="row align-items-center justify-content-center
+          min-vh-100">
+      <div class="col-12 col-md-8 col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="mb-2">
+              <h5>Quên mật khẩu?</h5>
+              <p class="m-0 p-0">Hãy điền email của bạn vào
+              </p>
+            </div>
+            <?php
+            if (isset($message)) {
+              foreach ($message as $message) {
+                echo '<p class="form-outline flex-fill mb-0 text-danger">' . $message . '</p>';
               }
-              ?>
-              <div class="form-outline mb-4">
-                <label class="form-label float-start ms-1">Email</label>
-                <input type="email" name="resetPass" class="form-control form-control-lg" />
+            }
+            ?>
+            <form method="post">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="resetPass" id="email" class="form-control" placeholder="Email của bạn">
               </div>
-              <button class="btn btn-primary btn-lg btn-block w-100 text-black" name="submit_manager" type="submit">Tìm tài khoản</button>
-              <a href="./index.php?pages=account&action=login" class="btn btn-primary btn-lg btn-block text-black w-100 mt-3">Trở lại</a>
+              <div class="mb-3 d-grid">
+                <button name="submit_manager" type="submit" class="btn btn-dark">
+                  Tìm
+                </button>
+              </div>
+              <span>Trở về trang <a href="./index.php?pages=account&action=login">đăng nhập</a></span>
             </form>
           </div>
         </div>

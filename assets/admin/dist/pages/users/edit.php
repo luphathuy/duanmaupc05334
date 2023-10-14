@@ -15,6 +15,11 @@
       } else {
         $item['image'] = "default_img.jpg";
       }
+      if ($item['status'] == 0) {
+        $item['status'] = 'Hoạt động';
+      } else {
+        $item['status'] = 'Khóa tài khoản';
+      }
       ?>
       <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Ảnh đại diện</span>
@@ -26,19 +31,15 @@
         <input type="text" class="w-100 p-2 rounded-2 border mb-md-3" name="name" value="<?= $item['name'] ?>">
       </div>
       <div class="form-floating">
-        <span class="text-md-start d-block mb-md-2 text-black h6">Email</span>
-        <input type="text" class="w-100 p-2 rounded-2 border mb-md-3" name="email" value="<?= $item['email'] ?>">
-      </div>
-      <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Số điện thoại</span>
         <input type="text" class="w-100 p-2 rounded-2 border mb-md-3" name="phone" value="<?= $item['phone'] ?>">
       </div>
       <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Giới Tính</span>
         <select class="w-100 p-2 rounded-2 border mb-md-3" name="sex">
-            <option class="text-black" value="<?= $item['sex'] ?>"><?= $item['sex'] ?></option>
-            <option class="text-black" value="Nam">Nam</option>
-            <option class="text-black" value="Nữ">Nữ</option>
+          <option class="text-black" value="<?= $item['sex'] ?>"><?= $item['sex'] ?></option>
+          <option class="text-black" value="Nam">Nam</option>
+          <option class="text-black" value="Nữ">Nữ</option>
         </select>
       </div>
       <div class="form-floating">
@@ -52,6 +53,14 @@
       <div class="form-floating">
         <span class="text-md-start d-block mb-md-2 text-black h6">Ngày Sinh</span>
         <input type="date" class="w-100 p-2 rounded-2 border mb-md-3" name="date_birth" value="<?= $item['date_birth'] ?>">
+      </div>
+      <div class="form-floating">
+        <span class="text-md-start d-block mb-md-2 text-black h6">Trạng thái</span>
+        <select class="w-100 p-2 rounded-2 border mb-md-3" name="status">
+          <option class="text-black" value="<?= $item['status'] ?>"><?= $item['status'] ?></option>
+          <option class="text-black" value="0">Hoạt động</option>
+          <option class="text-black" value="1">Khóa tài khoản</option>
+        </select>
       </div>
       <div class="modal-footer mb-3">
         <a class="btn btn-success float-end" href="./index.php?pages=users&action=list"><i class="fas fa-angle-left"></i> Trở Lại</a>

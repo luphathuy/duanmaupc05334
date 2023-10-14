@@ -1,28 +1,35 @@
-<section class="bg-dark vh-100 bg-opacity-75">
-  <div class="container h-100 mt-5">
-    <div class="row d-flex justify-content-center w-100 align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card shadow-2-strong" style="border-radius: 1rem;">
-          <div class="card-body p-5 text-center">
-            <h3 class="mb-4">Đổi mật khẩu</h3>
+<section style="background-color: #9A616D;">
+  <div class="container d-flex flex-column">
+    <div class="row align-items-center justify-content-center
+          min-vh-100">
+      <div class="col-12 col-md-8 col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="mb-2">
+              <h5>Thay đổi mật khẩu</h5>
+              <p class="m-0 p-0">Hãy điền mật khẩu mới của bạn vào
+              </p>
+            </div>
             <?php
             if (isset($message)) {
               foreach ($message as $message) {
-                echo '<p class="rounded-3 col-md-12 pt-2 pb-2">' . $message . '</p>';
+                echo '<p class="form-outline flex-fill mb-0 text-danger">' . $message . '</p>';
               }
             }
             ?>
-            <form action="" method="post">
-              <div class="form-outline mb-4">
-                <label class="form-label float-start h6">Mật khẩu mới</label>
-                <input class="form-control form-control-lg" type="password" name="password">
+            <form method="post">
+              <div class="mb-3">
+                <label for="email" class="form-label">Mật khẩu</label>
+                <input type="password" name="password" id="email" class="form-control" placeholder="Mật khẩu">
               </div>
-              <div class="form-outline mb-4">
-                <label class="form-label float-start h6">Nhập lại mật khẩu mới</label>
-                <input class="form-control form-control-lg" type="password" name="cpassword">
+              <div class="mb-3">
+                <label for="email" class="form-label">Nhập lại mật khẩu</label>
+                <input type="password" name="cpassword" id="email" class="form-control" placeholder="Nhập lại mật khẩu">
               </div>
-              <div class="col-md-12">
-                <input class="btn btn-primary pt-3 pb-3 mt-3 text-black" name="resetpass" type="submit" value="Thay đổi">
+              <div class="mb-3 d-grid">
+                <button name="resetpass" type="submit" class="btn btn-dark mt-3">
+                  Thay đổi
+                </button>
               </div>
             </form>
           </div>

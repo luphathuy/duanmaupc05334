@@ -38,7 +38,9 @@ if (isset($_POST['submit'])) {
   } else {
     if ($password != $cpassword) {
       $message[] = 'Mật khẩu nhập lại chưa trùng khớp!';
-    } else if ($age < 18) {
+    } elseif (strlen($_POST['password']) < 6) {
+      $message[] = 'Mật khẩu ít nhất 6 ký tự!';
+    } elseif ($age < 18) {
       $message[] = 'Bạn chưa đủ 18 tuổi, Vui lòng thử lại!';
     } else {
       $insert = "INSERT INTO users (name, email, phone, sex, password, image, address, citizen_id, date_birth, facebook, tiktok, role) 
@@ -91,7 +93,7 @@ if (isset($_POST['submit_manager'])) {
       $message[] = 'Link tạo lại mật khẩu đã gửi đến email!';
     }
   } else {
-    $message[] = 'Vui lòng nhập đúng email!';
+    $message[] = 'Email vừa nhập không có!';
   }
 };
 //Quên mật khẩu admin
@@ -133,7 +135,7 @@ if (isset($_POST['submit_admin'])) {
       $message[] = 'Link tạo lại mật khẩu đã gửi đến email!';
     }
   } else {
-    $message[] = 'Vui lòng nhập đúng email!';
+    $message[] = 'Email vừa nhập không có!';
   }
 };
 //Đổi mật khẩu user
@@ -144,12 +146,12 @@ if (isset($_POST['resetpass'])) {
     $cpassword = md5($_POST['cpassword']);
     if ($password != $cpassword) {
       $message[] = 'Mật khẩu không trùng khớp, vui lòng nhập lại!';
+    } elseif (strlen($_POST['password']) < 6) {
+      $message[] = 'Mật khẩu ít nhất 6 ký tự';
     } else {
       mysqli_query($conn, "UPDATE users SET password = '$password' WHERE id = '$reset_pass'");
       $message[] = 'Đã Thay Đổi Mật Khẩu <a href="http://gwine/index.php?pages=account&action=login" class="text-danger">Bấm Vào Đây</a> Để Đăng Nhập';
     }
-  } else {
-    echo 'Ko thấy';
   }
 }
 //Đổi mật khẩu admin
@@ -160,12 +162,12 @@ if (isset($_POST['resetpassadmin'])) {
     $cpassword = md5($_POST['cpassword']);
     if ($password != $cpassword) {
       $message[] = 'Mật khẩu không trùng khớp, vui lòng nhập lại!';
+    } elseif (strlen($_POST['password']) < 6) {
+      $message[] = 'Mật khẩu ít nhất 6 ký tự';
     } else {
       mysqli_query($conn, "UPDATE users SET password = '$password' WHERE id = '$reset_pass'");
       $message[] = 'Mật khẩu đã được thay đổi!';
     }
-  } else {
-    echo 'Ko thấy';
   }
 }
 //Đăng xuất
@@ -173,12 +175,18 @@ if (isset($_POST['forgot'])) {
   session_unset();
   session_destroy();
 
-  header('Location: ./index.php?pages=home');
+  header('Location: ./index.php?pages=account&action=login');
 }
 //xóa danh mục
 if (isset($_GET['delete'])) {
   $id = $_GET['delete'];
+  deleteProductCategory($id);
   deleteCategoryId($id);
+}
+//Xóa sản phẩm
+if (isset($_GET['delete'])) {
+  $id = $_GET['delete'];
+  deleteProductId($id);
 }
 //xóa đơn hàng
 // if (isset($_GET['delete'])) {
@@ -201,8 +209,11 @@ if (isset($_GET['edit'])) {
 //Thêm danh mục
 if (isset($_POST['add_category'])) {
   $name = $_POST['name'];
+  $select = mysqli_query($conn, "SELECT name FROM category WHERE name = '$name'");
   if (empty($name)) {
     $message[] = 'Vui lòng điền đầy đủ thông tin';
+  } elseif (mysqli_num_rows($select) > 0) {
+    $message[] = 'Tên danh mục đã tồn tại';
   } else {
     addCategoryId($name);
   }
@@ -228,7 +239,7 @@ if (isset($_GET['edit'])) {
   if (isset($_POST['edit_products'])) {
     $image = $_FILES['image']['name'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
-    $image_folder = './assets/admin/uploaded_img/' . $image;
+    $image_folder = '../admin/uploaded_img/' . $image;
     if (!empty($image)) {
       uploadImageProduct($image, $image_tmp_name, $image_folder, $id);
     }
@@ -239,11 +250,12 @@ if (isset($_GET['edit'])) {
     $category = $_POST['category'];
     $type = $_POST['type'];
     $describe = $_POST['describe'];
+    $toggle = $_POST['toggle'];
 
     if (empty($product_name) || empty($product_price) || empty($product_sale) || empty($describe)) {
       $message[] = 'Vui lòng điền đầy đủ thông tin';
     } else {
-      uploadProduct($product_name, $product_price, $product_sale, $category, $type, $describe, $id);
+      uploadProduct($product_name, $product_price, $product_sale, $category, $type, $describe, $toggle, $id);
     }
   }
 }
@@ -251,18 +263,23 @@ if (isset($_GET['edit'])) {
 if (isset($_POST['add_products'])) {
   $image = $_FILES['image']['name'];
   $image_tmp_name = $_FILES['image']['tmp_name'];
-  $image_folder = './assets/admin/uploaded_img/' . $image;
+  $image_folder = '../admin/uploaded_img/' . $image;
   $product_name = $_POST['product_name'];
   $product_price = $_POST['product_price'];
   $product_sale = $_POST['product_sale'];
   $describe = $_POST['describe'];
   $category = $_POST['category'];
+  $toggle = $_POST['toggle'];
   $type = $_POST['type'];
 
   if (empty($image) || empty($product_name) || empty($product_price) || empty($product_sale) || empty($describe)) {
     $message[] = 'Vui lòng điền đầy đủ thông tin';
+  } elseif ($product_price < 0) {
+    $message[] = 'Giá gốc không được âm';
+  } elseif ($product_sale < 0 || $product_sale > $product_price) {
+    $message[] = 'Giá giảm không được âm và không được lớn hơn giá gốc';
   } else {
-    addProduct($product_name, $product_price, $product_sale, $image, $image_tmp_name, $image_folder, $category, $type, $describe);
+    addProduct($product_name, $product_price, $product_sale, $image, $image_tmp_name, $image_folder, $category, $type, $describe, $toggle);
   }
 }
 //Gửi bài liên hệ
@@ -281,30 +298,33 @@ if (isset($_SESSION['id'])) {
       $mess[] = 'Đã gửi';
     }
   }
-}
+} 
 //Sửa người dùng theo id
 if (isset($_GET['edit'])) {
   $id = $_GET['edit'];
   if (isset($_POST['edit_users'])) {
     $image = $_FILES['image']['name'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
-    $image_folder = './assets/admin/uploaded_img/' . $image;
+    $image_folder = '../admin/uploaded_img/' . $image;
     if (!empty($image)) {
       uploadImageUser($image, $image_tmp_name, $image_folder, $id);
     }
 
     $name = $_POST['name'];
-    $email = $_POST['email'];
     $phone = $_POST['phone'];
     $sex = $_POST['sex'];
     $address = $_POST['address'];
     $citizen_id = $_POST['citizen_id'];
     $date_birth = $_POST['date_birth'];
-
-    if (empty($name) || empty($email) || empty($phone)) {
+    $status = $_POST['status'];
+    $now = date("Y-m-d");
+    $age = date_diff(date_create($date_birth), date_create($now))->y;
+    if (empty($name) || empty($phone) || empty($address) || empty($citizen_id) || empty($date_birth)) {
       $message[] = 'Vui lòng điền đầy đủ thông tin';
+    } else if ($age < 18) {
+      $message[] = 'Bạn chưa đủ 18 tuổi, Vui lòng thử lại!';
     } else {
-      uploadUserId($name, $email, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id);
+      uploadUserId($name, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id);
       header('Location: ./index.php?pages=users&action=list');
     }
   }
@@ -318,24 +338,27 @@ if (isset($_POST['add_users'])) {
   $sex = $_POST['sex'];
   $image = $_FILES['image']['name'];
   $image_tmp_name = $_FILES['image']['tmp_name'];
-  $image_folder = './assets/admin/uploaded_img/' . $image;
+  $image_folder = '../admin/uploaded_img/' . $image;
   $address = $_POST['address'];
   $citizen_id = $_POST['citizen_id'];
   $date_birth = $_POST['date_birth'];
+  $status = $_POST['status'];
   $facebook = '';
   $tiktok = '';
   $role = $_POST['role'];
   $now = date("Y-m-d");
   $age = date_diff(date_create($date_birth), date_create($now))->y;
   $select = mysqli_query($conn, "SELECT email, password FROM users WHERE email = '$email'");
-  if (empty($name) || empty($password) || empty($email) || empty($date_birth)) {
+  if (empty($name) || empty($password) || empty($email) || empty($phone) || empty($address) || empty($citizen_id) || empty($date_birth)) {
     $message[] = 'Vui lòng điền đầy đủ thông tin';
+  } elseif (strlen($_POST['password']) < 6) {
+    $message[] = 'Mật khẩu ít nhất 6 ký tự!';
   } elseif (mysqli_num_rows($select) > 0) {
     $message[] = 'Email đã tồn tại';
   } else if ($age < 18) {
     $message[] = 'Bạn chưa đủ 18 tuổi, Vui lòng thử lại!';
   } else {
-    uploadUser($name, $password, $email, $phone, $sex, $image, $image_tmp_name, $image_folder, $address, $citizen_id, $date_birth, $facebook, $tiktok, $role);
+    uploadUser($name, $password, $email, $phone, $sex, $image, $image_tmp_name, $image_folder, $address, $citizen_id, $date_birth, $status, $facebook, $tiktok, $role);
   }
 }
 //Sửa hồ sơ theo id
@@ -348,9 +371,7 @@ if (isset($_GET['edit'])) {
     if (!empty($image)) {
       uploadImageUser($image, $image_tmp_name, $image_folder, $id);
     }
-
     $name = $_POST['name'];
-    $email = $_POST['email'];
     $phone  = $_POST['phone'];
     $sex = $_POST['sex'];
     $citizen_id = $_POST['citizen_id'];
@@ -358,10 +379,14 @@ if (isset($_GET['edit'])) {
     $address = $_POST['address'];
     $facebook = $_POST['facebook'];
     $tiktok = $_POST['tiktok'];
-    if (empty($name) || empty($email)) {
-      $message[] = 'Không thể để trống email và tên của bạn!';
+    $now = date("Y-m-d");
+    $age = date_diff(date_create($date_birth), date_create($now))->y;
+    if (empty($name) || empty($phone) || empty($date_birth)) {
+      $message[] = 'Không thể để trống một số thông tin!';
+    } else if ($age < 18) {
+      $message[] = 'Bạn chưa đủ 18 tuổi, Vui lòng thử lại!';
     } else {
-      uploadUserId($name, $email, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id);
+      uploadUserId($name, $phone, $sex, $address, $citizen_id, $date_birth, $facebook, $tiktok, $id);
       header('Location: ./index.php?pages=profile&action=file');
     }
   }
@@ -469,6 +494,48 @@ if (isset($_POST['submit_comment'])) {
     uploadComment($content, $id_users, $id_product);
   }
 }
+if (isset($_GET['id_comment'])) {
+  $user_id = $_GET['id_comment'];
+  // Đếm đơn hàng người dùng theo id
+  countOrder($user_id);
+  // Đếm liên hệ người dùng theo id
+  countContact($user_id);
+  // Đếm bình luận người dùng theo id
+  countComment($user_id);
+}
+// Lấy liên hệ theo id người dùng
+if (isset($_GET['id'])) {
+  $user_id = $_GET['id'];
+  getOrderSession($user_id);
+  getCommentIdUser($user_id);
+  getBill($user_id);
+}
+// Lấy profile theo id người dùng
+if (isset($_GET['profile_id'])) {
+  $id = $_GET['profile_id'];
+  getUserId($id);
+}
+// Lấy liên hệ theo id người dùng
+if (isset($_GET['vieworder'])) {
+  $id_bill = $_GET['vieworder'];
+  getCart($id_bill);
+}
+if (isset($_GET['edit'])) {
+  if (isset($_POST['edit_order'])) {
+    $status = $_POST['status'];
+    uploadBillId($id, $status);
+  }
+}
+if (isset($_GET['view'])) {
+  $views = $_GET['view'];
+  getCommentId($views);
+  getProductCategoryViews($views);
+}
+// Lấy liên hệ theo id người dùng
+if (isset($_GET['user_id'])) {
+  $id_user = $_GET['user_id'];
+  getCommentDelete($id_user);
+}
 //Session cart
 if (isset($_POST['add_to_cart'])) {
   if (empty($_SESSION['id'])) {
@@ -505,38 +572,6 @@ if (isset($_POST['add_to_cart'])) {
     }
   }
 }
-if (isset($_GET['id_comment'])) {
-  $user_id = $_GET['id_comment'];
-  // Đếm đơn hàng người dùng theo id
-  countOrder($user_id);
-  // Đếm liên hệ người dùng theo id
-  countContact($user_id);
-  // Đếm bình luận người dùng theo id
-  countComment($user_id);
-}
-// Lấy liên hệ theo id người dùng
-if (isset($_GET['id'])) {
-  $user_id = $_GET['id'];
-  getOrderSession($user_id);
-  getCommentIdUser($user_id);
-  getBill($user_id);
-}
-// Lấy profile theo id người dùng
-if (isset($_GET['profile_id'])) {
-  $id = $_GET['profile_id'];
-  getUserId($id);
-}
-// Lấy liên hệ theo id người dùng
-if (isset($_GET['vieworder'])) {
-  $id_bill = $_GET['vieworder'];
-  getCart($id_bill);
-}
-if (isset($_GET['edit'])) {
-  if (isset($_POST['edit_order'])) {
-    $status = $_POST['status'];
-    uploadBillId($id, $status);
-  }
-}
 // Thanh toán sản phẩm
 if (isset($_POST['payCart'])) {
   $id = $_POST['id'];
@@ -560,14 +595,14 @@ if (isset($_POST['payCart'])) {
         $totals = $price * $quantity;
         insertCart($names, $image, $price, $quantity, $totals, $id_bill);
       }
-      if (isset($user_id)) {
+      if (isset($_SESSION['id'])) {
+        $user_id = $_SESSION['id'];
         foreach (getBill($user_id) as $date) {
           $date_bill = $date['create_at'];
         }
       } else {
         echo '';
       }
-
 
       if ($pay === '0') {
         $pay_show = 'Thanh toán khi nhận hàng';
@@ -728,9 +763,9 @@ if (isset($_POST['payCart'])) {
       </tbody>
     </table> ";
 
-      require './PHPMailer-master/src/Exception.php';
-      require './PHPMailer-master/src/PHPMailer.php';
-      require './PHPMailer-master/src/SMTP.php';
+      require './assets/PHPMailer-master/src/Exception.php';
+      require './assets/PHPMailer-master/src/PHPMailer.php';
+      require './assets/PHPMailer-master/src/SMTP.php';
 
       $email = $emails;
       $mail = new PHPMailer\PHPMailer\PHPMailer();
@@ -750,7 +785,7 @@ if (isset($_POST['payCart'])) {
         exit();
       }
     } else {
-      echo 'Lối';
+      echo 'Lỗi';
     }
   }
   unset($_SESSION['cart']);

@@ -36,7 +36,7 @@
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <!-- Content -->
           <div class="d-flex justify-content-center justify-content-md-start">
-            <img src="/product/dist/assets/img/logo1.png" alt="" width="50">
+            <img src="/assets/product/dist/assets/img/logo1.png" alt="" width="50">
             <p class="p-0 ms-2 mt-2">GWINE</p>
           </div>
 

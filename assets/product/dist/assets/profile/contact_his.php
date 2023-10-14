@@ -1,6 +1,7 @@
 <section class="py-5 pb-0 mb-3" style="overflow-x: scroll;">
   <?php
-  if (isset($user_id)) {
+  if (isset($_SESSION['id'])) {
+    $user_id = $_SESSION['id'];
     foreach (getUserSession($user_id) as $item) : ?>
       <a href="./index.php?pages=profile&action=file&id_comment=<?= $item['id'] ?>" class="d-flex mt-5 pt-2 ms-2"><i class="fa fa-arrow-left" style="font-size: 24px;"></i>
         <h4 class="ms-3 text-uppercase">Lịch sử liên hệ</h4>

@@ -4,7 +4,7 @@
     <?php
     if (isset($message)) {
       foreach ($message as $message) {
-        echo '<p class="text-primary">' . $message . '</p>';
+        echo '<p class="text-danger">' . $message . '</p>';
       }
     }
     ?>
@@ -27,6 +27,13 @@
     <div class="form-floating">
       <span class="text-md-start d-block mb-md-2 text-black h6">Mô tả</span>
       <input type="text" class="w-100 p-2 rounded-2 border mb-md-3" name="describe">
+    </div>
+    <div class="form-floating">
+      <span class="text-md-start d-block mb-md-2 text-black h6">Bình luận</span>
+      <select class="w-100 p-2 rounded-2 border mb-md-3" name="toggle">
+        <option class="text-black" value="0">Bật</option>
+        <option class="text-black" value="1">Tắt</option>
+      </select>
     </div>
     <div class="form-floating">
       <span class="text-md-start d-block mb-md-2 text-black h6">Phân loại</span>
